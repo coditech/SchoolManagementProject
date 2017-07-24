@@ -1,0 +1,11 @@
+This is a website for schools.
+
+It has 4 main users: parents, students, teachers and the school admin.
+
+The parents use this website to see their sons and daughters grades, or to contact specific teachers or the schools administration, or to view school news.
+
+Students use this website to view their grades or to view school news.
+
+Teachers use this website to contact a specific student's parents or to view school news.
+
+The school admin handles making accounts for parents, students and teachers, and linking students to their parents.
