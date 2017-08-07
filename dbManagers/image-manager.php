@@ -1,6 +1,6 @@
 <?php
 
-class ImagesManager{
+class ImageManager{
     public $db;
     
     public function __construct(PDO $db){
