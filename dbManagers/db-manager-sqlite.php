@@ -10,7 +10,7 @@ catch (PDOException $e) {
 $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 $db->exec("CREATE TABLE IF NOT EXISTS person
                                             (
-                                                id INT NOT NULL ,
+                                                id INT ,
                                                 name VARCHAR(255),
                                                 lastName VARCHAR(255),
                                                 gender VARCHAR(30),
@@ -25,7 +25,7 @@ $db->exec("CREATE TABLE IF NOT EXISTS person
 
 $db->exec("CREATE TABLE IF NOT EXISTS grade
                                             (
-                                                id INT NOT NULL ,
+                                                id INT  ,
                                                 score DOUBLE,
                                                 semester INT,
                                                 year INT,
@@ -36,7 +36,7 @@ $db->exec("CREATE TABLE IF NOT EXISTS grade
 
 $db->exec("CREATE TABLE IF NOT EXISTS article
                                             (
-                                                id INT NOT NULL ,
+                                                id INT ,
                                                 title VARCHAR(255),
                                                 text VARCHAR(255),
                                                 date DATE ,
@@ -45,7 +45,7 @@ $db->exec("CREATE TABLE IF NOT EXISTS article
 
 $db->exec("CREATE TABLE IF NOT EXISTS course
                                             (
-                                                id INT NOT NULL , 
+                                                id INT , 
                                                 courseCode VARCHAR(255),
                                                 courseName VARCHAR(255),
                                                 courseMaxGrade INT,
@@ -58,7 +58,7 @@ $db->exec("CREATE TABLE IF NOT EXISTS course
 
 $db->exec("CREATE TABLE IF NOT EXISTS message
                                             (
-                                                senderId INT NOT NULL,
+                                                senderId INT ,
                                                 recipientId INT NOT NULL,
                                                 date DATE ,
                                                 text TEXT,
@@ -67,7 +67,7 @@ $db->exec("CREATE TABLE IF NOT EXISTS message
 
 $db->exec("CREATE TABLE IF NOT EXISTS image
                                             (
-                                                id INT NOT NULL ,
+                                                id INT ,
                                                 pathToImg VARCHAR(255),
                                                 articleId INT,
                                                 PRIMARY KEY(id)
@@ -75,7 +75,7 @@ $db->exec("CREATE TABLE IF NOT EXISTS image
 
 $db->exec("CREATE TABLE IF NOT EXISTS student
                                             (
-                                                id INT NOT NULL ,
+                                                id INT ,
                                                 parentId INT,
                                                 class VARCHAR(255),
                                                 PRIMARY KEY(id)
