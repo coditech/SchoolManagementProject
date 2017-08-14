@@ -26,6 +26,35 @@
         );
     }
 
+    function getArticlesPage($page,$limit){
+        $start = ($page - 1) * $limit;
+        $pages = "SELECT * FROM article LIMIT :start,:limit";
+        $statement = $this->db->prepare($pages);
+        $statement->execute([':start'=>$start,':limit'=> $limit]);
+        return $statement;
+    }
+
+    function getArticleFeaturedImagePath($articleId){
+        $getImage = "SELECT pathToImg FROM image WHERE articleId=:articleId LIMIT 1";
+        $statement = $this->db->prepare($getImage);
+        $statement->execute([':articleId'=>$articleId]
+    );
+    foreach($statement as $image){
+        $imagePath = $statement['pathToImg'];
+        break;
+    }
+    return $imagePath;
+    }
+
+    function success($page,$limit){
+        $statement = $this->getArticlesPage($page,$limit);
+        $success = $statement->fetchAll();
+        if (empty($success))return "false";
+        else return "true";
+    }
+
+    
+
     }
 
 ?>

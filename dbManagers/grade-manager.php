@@ -32,7 +32,7 @@ class GradeManager{
         $statement->bindParam(':id', $id);
         $statement->execute();
 
-        return $score < $maxGrade;
+        return $score < $statement;
 
     }
 
