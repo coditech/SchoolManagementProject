@@ -26,6 +26,13 @@
         );
     }
 
+    public function getArticle($id){
+        $article = "SELECT * FROM article WHERE id=:id";
+        $statement = $this->db->prepare($article);
+        $statement->execute([':id'=> $id]);
+
+    }
+
     function getArticlesPage($page,$limit){
         $start = ($page - 1) * $limit;
         $pages = "SELECT * FROM article LIMIT :start,:limit";
@@ -83,7 +90,7 @@
         } else if($page == ($totalPages-1)) {
             return array($totalPages,"");
         } else if ($page>0 && $page <= $totalPages-2){
-            return array($totalPages-1,$totalPages);
+            return array($page+1,$page+2);
         } else return array();
     }
 
