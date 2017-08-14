@@ -43,14 +43,34 @@
         $imagePath = $statement['pathToImg'];
         break;
     }
-    return $imagePath;
+        return $imagePath;
+    }
+
+    function getTotalArticles(){
+        $totalArticles = "SELECT count(*) FROM article";
+        $statement = $this->db->prepare($totalArticles);
+        $statement->execute();
+        return $statement->fetchAll()[0][0];
+    }
+
+    function getNumberOfPages($limit){
+        $totalArticles = $this->getTotalArticles();
+        return $totalArticles/$limit;
     }
 
     function success($page,$limit){
         $statement = $this->getArticlesPage($page,$limit);
         $success = $statement->fetchAll();
         if (empty($success))return "false";
-        else return "true";
+        else return "true"; 
+    }
+
+    function previousPages($page,$limit){
+        $totalPages = $this->getNumberOfPages($limit);
+        if ($page == 1) {
+            return array();
+        }   
+
     }
 
     

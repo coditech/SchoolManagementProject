@@ -30,10 +30,7 @@ class Router{
 
         if($path[0]=="articles"){
 
-            if($_GET["page"]<1){
-                $page = 1;
-            }
-            else if (isset($_GET["page"])) {
+            if (isset($_GET["page"])) {
 	        $page = $_GET["page"];
             }
             else {
@@ -43,19 +40,15 @@ class Router{
             $limit=$_GET["limit"];
             $data = $this->sqlToArray($this->articleMan->getArticlesPage($page,$limit));
             $success = $this->articleMan->success($page,$limit);
-            
 
             $jsonArray['success']= $success;
             $jsonArray['data']= $data;
             
 
-
-
             echo "<pre>";
             print_r($jsonArray);
             echo "</pre>";
 
-            $asd = array(1,3,4);
             
         }
     }
