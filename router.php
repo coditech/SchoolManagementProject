@@ -41,7 +41,7 @@ class Router{
             }               
 
             $limit=$_GET["limit"];
-            $data = $this->articleMan->getData($page,$limit);
+            $data = $this->articleMan->getPageData($page,$limit);
             $success = $this->articleMan->successPage($page,$limit);
             $previous = $this->articleMan->previousPages($page,$limit);
             $next = $this->articleMan->nextPages($page,$limit);
@@ -71,10 +71,12 @@ class Router{
         }
 
 
-            echo "<pre>";
-            print_r($jsonArray);
-            echo "</pre>";  
+            // echo "<pre>";
+            // print_r($jsonArray);
+            // echo "</pre>";  
 
+
+            header('Content-Type: application/json');
             echo json_encode($jsonArray);
 
     }

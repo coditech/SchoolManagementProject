@@ -60,7 +60,7 @@
         return $imagePath;
     }
 
-    function getData($page,$limit){
+    function getPageData($page,$limit){
         $articlePage = $this->getArticlesPage($page,$limit);
         $articlePageData = $articlePage->fetchAll();
         $data = array();
@@ -104,9 +104,9 @@
     function previousPages($page,$limit){
         $totalPages = $this->getNumberOfPages($limit);
         if ($page == 1) {
-            return array("","");
+            return array();
         }  else if ($page == 2 && $page <= $totalPages ){
-            return array("",1);
+            return array(1);
         }  else if ($page > 2 && $page <= $totalPages){
             return array($page-2,$page-1);
         }  else return array();
@@ -115,9 +115,9 @@
     function nextPages($page,$limit){
         $totalPages = $this->getNumberOfPages($limit);
         if ($page == $totalPages){
-            return array("","");
+            return array();
         } else if($page == ($totalPages-1)) {
-            return array($totalPages,"");
+            return array($totalPages);
         } else if ($page>0 && $page <= $totalPages-2){
             return array($page+1,$page+2);
         } else return array();
@@ -130,7 +130,10 @@
         $next=$statement->fetchAll()[0][0];
 
         if($this->successArticle($id)=="true"){
+            if($this->successArticle($next)=="true"){
             return $this->getArticleData($next);
+            } else {
+            return array();}
         } else {
             return array();
         }
@@ -143,7 +146,10 @@
         $prev=$statement->fetchAll()[0][0];
 
         if($this->successArticle($id)=="true"){
+             if($this->successArticle($prev)=="true"){
             return $this->getArticleData($prev);
+            }  else {
+            return array();}
         } else {
             return array();
         }
