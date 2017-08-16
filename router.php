@@ -34,62 +34,74 @@ class Router
         $path = $this->getPathArray();
         $jsonArray = array();
 
-        if ($path[0] == "home") {
 
-            if (isset($_GET["page"])) {
-                $page = $_GET["page"];
-                if ($page < 1) {
+        if ($path[0] == 'api') {
+            if ($path[1] == "home") {
+
+                if (isset($_GET["page"])) {
+                    $page = $_GET["page"];
+                    if ($page < 1) {
+                        $page = 1;
+                    }
+                } else {
                     $page = 1;
                 }
-            } else {
-                $page = 1;
+
+                $limit = $_GET["limit"];
+                $data = $this->articleMan->getPageData($page, $limit);
+                $success = $this->articleMan->successPage($page, $limit);
+                $previous = $this->articleMan->previousPages($page, $limit);
+                $next = $this->articleMan->nextPages($page, $limit);
+                $error = $this->articleMan->getErrorPage($page, $limit);
+                $lastPage = $this->articleMan->getNumberOfPages($limit);
+
+                $jsonArray['success'] = $success;
+                $jsonArray['data'] = $data;
+                $jsonArray['previous'] = $previous;
+                $jsonArray['next'] = $next;
+                $jsonArray['last'] = $lastPage;
+                $jsonArray['error'] = $error;
+
+            } else if ($path[1] == "articles") {
+                $id = $_GET["id"];
+
+                $data = $this->articleMan->getArticleData($id);
+                $success = $this->articleMan->successArticle($id);
+                $error = $this->articleMan->getErrorArticle($id);
+                $next = $this->articleMan->nextArticle($id);
+                $previous = $this->articleMan->previousArticle($id);
+
+                $jsonArray['success'] = $success;
+                $jsonArray['data'] = $data;
+                $jsonArray['next'] = $next;
+                $jsonArray['previous'] = $previous;
+                $jsonArray['error'] = $error;
+
             }
+//            echo "<pre>";
+//            print_r($jsonArray);
+//            echo "</pre>";
 
-            $limit = $_GET["limit"];
-            $data = $this->articleMan->getPageData($page, $limit);
-            $success = $this->articleMan->successPage($page, $limit);
-            $previous = $this->articleMan->previousPages($page, $limit);
-            $next = $this->articleMan->nextPages($page, $limit);
-            $error = $this->articleMan->getErrorPage($page, $limit);
-            $lastPage = $this->articleMan->getNumberOfPages($limit);
 
-            $jsonArray['success'] = $success;
-            $jsonArray['data'] = $data;
-            $jsonArray['previous'] = $previous;
-            $jsonArray['next'] = $next;
-            $jsonArray['last'] = $lastPage;
-            $jsonArray['error'] = $error;
 
-        } else if ($path[0] == "articles") {
-            $id = $_GET["id"];
+            header('Content-Type: application/json');
+            echo json_encode($jsonArray);
+        } /**
+         *  Front End Routes
+         * */
+        else {
+            if ($path[0] == '') {
 
-            $data = $this->articleMan->getArticleData($id);
-            $success = $this->articleMan->successArticle($id);
-            $error = $this->articleMan->getErrorArticle($id);
-            $next = $this->articleMan->nextArticle($id);
-            $previous = $this->articleMan->previousArticle($id);
+                require 'front/index.html';
+            } else if ($path[0] == 'article') {
 
-            $jsonArray['success'] = $success;
-            $jsonArray['data'] = $data;
-            $jsonArray['next'] = $next;
-            $jsonArray['previous'] = $previous;
-            $jsonArray['error'] = $error;
-
+                require 'front/article.html';
+            }
         }
+//
 
-
-        // echo "<pre>";
-        // print_r($jsonArray);
-        // echo "</pre>";
-
-
-        header('Content-Type: application/json');
-        echo json_encode($jsonArray);
 
     }
 
 
 }
-
-
-?>

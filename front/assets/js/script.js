@@ -24,7 +24,7 @@ function articlesLoad(articles, selector, path_assets) {
             '<div class="caption"> ' +
             ' <h3>' + articles[i]['title'] + '</h3> ' +
             ' <p></p> ' +
-            ' <a class="text-uppercase text-success" href="article.html?article=' + articles[i]['id'] + '">' +
+            ' <a class="text-uppercase text-success" href="article?article=' + articles[i]['id'] + '">' +
             '    <button class="btn btn-default btn-block" type="button">Read more</button>' +
             '</a>' +
             '  </div>' +
@@ -64,7 +64,7 @@ $(document).ready(function () {
     const get_limit = findGetParameter('limit');
     const page_number = get_page !== null ? get_page : 1;
     const page_limit = get_limit !== null ? get_limit : 8;
-    const url = 'http://localhost:8000/home?limit=' + page_limit + '&page=' + page_number;
+    const url = 'http://localhost:8000/api/home?limit=' + page_limit + '&page=' + page_number;
     $.ajax({
 
         url: url,
@@ -78,6 +78,8 @@ $(document).ready(function () {
 
             } else {
                 // page don't exist
+
+                alert(result.error);
 
             }
         }
