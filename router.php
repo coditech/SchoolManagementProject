@@ -41,11 +41,11 @@ class Router{
             }               
 
             $limit=$_GET["limit"];
-            $data = $this->sqlToArray($this->articleMan->getArticlesPage($page,$limit));
-            $success = $this->articleMan->success($page,$limit);
+            $data = $this->articleMan->getData($page,$limit);
+            $success = $this->articleMan->successPage($page,$limit);
             $previous = $this->articleMan->previousPages($page,$limit);
             $next = $this->articleMan->nextPages($page,$limit);
-            $error = $this->articleMan->getError($page,$limit);
+            $error = $this->articleMan->getErrorPage($page,$limit);
 
             $jsonArray['success']= $success;
             $jsonArray['data']= $data;
@@ -53,7 +53,20 @@ class Router{
             $jsonArray['next']=$next;
             $jsonArray['error']=$error;            
 
-        } else if ($path[0]=="articles" && $path[1]=="article"){
+        } else if ($path[0]=="articles"){
+            $id = $_GET["id"];
+
+            $data = $this->articleMan->getArticleData($id);
+            $success = $this->articleMan->successArticle($id);
+            $error = $this->articleMan->getErrorArticle($id);
+            $next = $this->articleMan->nextArticle($id);
+            $previous = $this->articleMan->previousArticle($id);
+
+            $jsonArray['success']= $success;
+            $jsonArray['data']= $data;
+            $jsonArray['next']= $next;
+            $jsonArray['previous']= $previous;
+            $jsonArray['error']= $error;
 
         }
 
@@ -61,6 +74,9 @@ class Router{
             echo "<pre>";
             print_r($jsonArray);
             echo "</pre>";  
+
+            echo json_encode($jsonArray);
+
     }
 
    

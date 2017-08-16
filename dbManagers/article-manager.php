@@ -26,11 +26,18 @@
         );
     }
 
-    public function getArticle($id){
+    public function getArticleData($id){
         $article = "SELECT * FROM article WHERE id=:id";
         $statement = $this->db->prepare($article);
         $statement->execute([':id'=> $id]);
+        $articleData = $statement->fetchAll()[0];
 
+        if (!empty($articleData)){
+        $articleData['featuredimage'] = $this->getArticleFeaturedImagePath($id);
+        $articleData[4] = $this->getArticleFeaturedImagePath($id);
+        }
+        
+        return $articleData;
     }
 
     function getArticlesPage($page,$limit){
@@ -47,10 +54,26 @@
         $statement->execute([':articleId'=>$articleId]
     );
     foreach($statement as $image){
-        $imagePath = $statement['pathToImg'];
+        $imagePath = $image['pathToImg'];
         break;
     }
         return $imagePath;
+    }
+
+    function getData($page,$limit){
+        $articlePage = $this->getArticlesPage($page,$limit);
+        $articlePageData = $articlePage->fetchAll();
+        $data = array();
+        foreach ($articlePageData as $article){
+            $dataTemp = array();
+            $dataTemp['id']=$article['id'];
+            $dataTemp['title']=$article['title'];
+            $dataTemp['text']=$article['text'];
+            $dataTemp['date']=$article['date'];
+            $dataTemp['featuredimage']=$this->getArticleFeaturedImagePath($article['id']);
+            $data[]=$dataTemp;
+        }
+        return $data;    
     }
 
     function getTotalArticles(){
@@ -65,10 +88,16 @@
         return ceil($totalArticles/$limit);
     }
 
-    function success($page,$limit){
+    function successPage($page,$limit){
         $statement = $this->getArticlesPage($page,$limit);
         $success = $statement->fetchAll();
         if (empty($success))return "false";
+        else return "true"; 
+    }
+
+    function successArticle($id){
+        $success = $this->getArticleData($id);
+         if (empty($success))return "false";
         else return "true"; 
     }
 
@@ -94,12 +123,47 @@
         } else return array();
     }
 
-    function getError($page,$limit){
-        $totalPages = $this->getNumberOfPages($limit);
-        $error ="";
-        if ($page>$totalPages){
-            $error .= "This Page is Out Of Range";
-        } 
+    function nextArticle($id){
+        $nextId = "SELECT id FROM article WHERE id > :id ORDER BY id ASC LIMIT 1";
+        $statement = $this->db->prepare($nextId);
+        $statement->execute([':id'=> $id]);
+        $next=$statement->fetchAll()[0][0];
+
+        if($this->successArticle($id)=="true"){
+            return $this->getArticleData($next);
+        } else {
+            return array();
+        }
+    }
+
+    function previousArticle($id){
+        $previousId = "SELECT id FROM article WHERE id < :id ORDER BY id DESC LIMIT 1";
+        $statement = $this->db->prepare($previousId);
+        $statement->execute([':id'=> $id]);
+        $prev=$statement->fetchAll()[0][0];
+
+        if($this->successArticle($id)=="true"){
+            return $this->getArticleData($prev);
+        } else {
+            return array();
+        }
+    }    
+
+    function getErrorPage($page,$limit){
+        if ($this->successPage($page,$limit)=="false"){
+            $error = "This Page is Out Of Range";
+        } else {
+            $error = "All Good No Errors";
+        }
+        return $error;
+    }
+
+    function getErrorArticle($id){
+        if ($this->successArticle($id)=="false"){
+            $error = "This Article Id Does Not Exist";
+        } else {
+            $error = "All Good No Errors";
+        }
         return $error;
     }
 
