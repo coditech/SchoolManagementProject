@@ -28,7 +28,7 @@ class Router{
         $path = $this->getPathArray();
         $jsonArray=array();
 
-        if($path[0]=="articles" && $path[1]=="home"){
+        if($path[0]=="home"){
 
             if (isset($_GET["page"])) {
 	        $page = $_GET["page"];

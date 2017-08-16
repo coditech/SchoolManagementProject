@@ -62,7 +62,7 @@
 
     function getNumberOfPages($limit){
         $totalArticles = $this->getTotalArticles();
-        return $totalArticles/$limit;
+        return ceil($totalArticles/$limit);
     }
 
     function success($page,$limit){
