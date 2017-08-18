@@ -58,7 +58,7 @@ function paginationLoad(next, prev, current_page, last, selector, page_limit) {
 
 }
 $(document).ready(function () {
-    const path_assets = '..';
+    const path_assets = '../';
 
     const get_page = findGetParameter('page');
     const get_limit = findGetParameter('limit');
