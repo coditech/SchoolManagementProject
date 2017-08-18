@@ -1,5 +1,8 @@
 <?php
 
+require_once("./dbManagers/image-manager.php");
+
+
 class ArticleManager
 {
     public $db;
@@ -7,14 +10,40 @@ class ArticleManager
     public function __construct(PDO $db)
     {
         $this->db = $db;
+        $this->imageMan = new ImageManager($db);
     }
 
-    public function addArticle($title, $text)
+    public function addArticle($title, $text,$files)
     {
-        $insert = "INSERT INTO article (title,text) VALUES (:title,:text)";
-        $statement = $this->db->prepare($insert);
-        $statement->execute([':title' => $title, ':text' => $text]);
-    }
+	if ($this->successAddArticle($title, $text, $files) == "true")
+		{
+            
+		$date = date("Y/m/d");
+		$insert = "INSERT INTO article (title,text,date) VALUES (:title,:text,:date)";
+		$statement = $this->db->prepare($insert);
+		$statement->execute([':title' => $title, ':text' => $text,':date'=>$date]);
+        
+		$id = $this->db->lastInsertId();
+
+		foreach($_FILES["files"]["tmp_name"] as $key => $tmp_name)
+			{
+			$file_name = $_FILES["files"]["name"][$key];
+			$file_tmp = $_FILES["files"]["tmp_name"][$key];
+			if (!file_exists("images/" . $file_name))
+				{
+				move_uploaded_file($file_tmp = $_FILES["files"]["tmp_name"][$key], "images/" . $file_name);
+				$this->imageMan->addImage("images/" . $file_name, $id);
+				}
+			  else
+				{
+				$filename = basename($file_name, $ext);
+				$newFileName = $filename . time() . "." . $ext;
+				move_uploaded_file($file_tmp = $_FILES["files"]["tmp_name"][$key], "images/" . $newFileName);
+				$this->imageMan->addImage("images/" . $newFileName, $id);
+				}
+			}
+		}
+	}
 
     public function deleteArticle($id)
     {
@@ -112,6 +141,26 @@ class ArticleManager
         $success = $this->getArticleData($id);
         if (empty($success)) return "false";
         else return "true";
+    }
+
+    function successAddArticle($title,$text,$files)
+    {
+        $extensions=array("jpeg","jpg","png");
+
+        if(empty($title))return "false";
+        if(empty($text))return "false";
+        if(empty($files))return "false";
+        
+        
+        foreach($files["name"] as $file){
+
+           $ext =  pathinfo($file)['extension'];
+           if(!in_array($ext,$extensions))return "false";
+
+        }
+
+        return "true";
+
     }
 
     function previousPages($page, $limit)
@@ -216,6 +265,28 @@ class ArticleManager
         }
         return $error;
     }
+
+    function getErrorAddArticle($title,$text,$files){
+
+        $error=array();
+
+        $extensions=array("jpeg","jpg","png");
+
+        if(empty($title)) $error["title"]="Title Can't Be Empty";
+        if(empty($text)) $error["text"]="Text Can't Be Empty";
+        if(empty($files)) $error["files"]="You Need To Upload At Least One Image";
+        
+        
+        foreach($files["name"] as $file){
+
+           $ext =  pathinfo($file)['extension'];
+           if(!in_array($ext,$extensions)) $error["files"]="One Of Your Files Has An Extension Other Than jpeg, jpg, png";
+        }
+
+        return $error;
+    }
+
+
 
 }
 

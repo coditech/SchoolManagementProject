@@ -6,4 +6,5 @@ require_once("./router.php");
 $router = new Router($db);
 $router->route();
 
+
 ?>

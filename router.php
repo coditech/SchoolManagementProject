@@ -3,6 +3,7 @@
 
 require_once("./dbManagers/article-manager.php");
 
+
 class Router
 {
 
@@ -48,6 +49,7 @@ class Router
                 }
 
                 $limit = $_GET["limit"];
+
                 $data = $this->articleMan->getPageData($page, $limit);
                 $success = $this->articleMan->successPage($page, $limit);
                 $previous = $this->articleMan->previousPages($page, $limit);
@@ -63,6 +65,23 @@ class Router
                 $jsonArray['error'] = $error;
 
             } else if ($path[1] == "articles") {
+
+                if($path[2]=="add"){
+
+                $title=$_POST['title'];
+                $text=$_POST['text'];
+                $files=$_FILES['files'];
+
+                
+                $this->articleMan->addArticle($title, $text,$files);
+                $success = $this->articleMan->successAddArticle($title,$text,$files);
+                $error = $this->articleMan->getErrorAddArticle($title,$text,$files);
+
+                $jsonArray['success'] = $success;
+                $jsonArray['error'] = $error;
+
+                } else {
+
                 $id = $_GET["id"];
 
                 $data = $this->articleMan->getArticleData($id);
@@ -76,12 +95,8 @@ class Router
                 $jsonArray['next'] = $next;
                 $jsonArray['previous'] = $previous;
                 $jsonArray['error'] = $error;
-
+                }
             }
-//            echo "<pre>";
-//            print_r($jsonArray);
-//            echo "</pre>";
-
 
 
             header('Content-Type: application/json');
@@ -91,7 +106,6 @@ class Router
          * */
         else {
             if ($path[0] == '') {
-
                 require 'front/index.html';
             } else if ($path[0] == 'article') {
 

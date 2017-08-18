@@ -155,6 +155,20 @@
         </nav>
     </div>
 </div>
+
+
+            <form method="post" enctype="multipart/form-data" action="/api/articles/add">
+                <input type="text" name="title" id="title" placeholder="Title" /><br />
+                <textarea rows="4" cols="40" placeholder="Body" name="text">
+                </textarea><br />
+                <input type="file" name="files[]" multiple/><br /><br />
+                <input type="submit" value="add article" />
+            </form>
+
+
+
+
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script src="/front/assets/js/script.js"></script>
