@@ -2,7 +2,6 @@
 
 require_once("./dbManagers/image-manager.php");
 
-
 class ArticleManager
 {
     public $db;
@@ -55,10 +54,11 @@ class ArticleManager
 
     public function editArticle($id, $title, $text)
     {
+        if($this->successEditArticle($title, $text)=="true"){
         $update = "UPDATE article SET title=:title, text=:text WHERE id=:id";
         $statement = $this->db->prepare($update);
         $statement->execute([':id' => $id, ':title' => $title, ':text' => $text]
-        );
+        );}
     }
 
     public function getArticleData($id)
@@ -162,6 +162,13 @@ class ArticleManager
 
         return "true";
 
+    }
+
+    function successEditArticle($title,$text){
+        if(empty($title))return "false";
+        if(empty($text))return "false";
+
+        return "true";
     }
 
     function previousPages($page, $limit)
@@ -283,6 +290,15 @@ class ArticleManager
            $ext =  pathinfo($file)['extension'];
            if(!in_array($ext,$extensions)) $error["files"]="One Of Your Files Has An Extension Other Than jpeg, jpg, png";
         }
+
+        return $error;
+    }
+
+    function getErrorEditArticle($title,$text){
+        $error=array();
+
+        if(empty($title)) $error["title"]="Title Can't Be Empty";
+        if(empty($text)) $error["text"]="Text Can't Be Empty";
 
         return $error;
     }

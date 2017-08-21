@@ -13,6 +13,7 @@ class Router
     {
         $this->db = $db;
         $this->articleMan = new ArticleManager($db);
+        $this->personMan = new PersonManager($db);
     }
 
     public function getUrl()
@@ -80,12 +81,34 @@ class Router
                 $jsonArray['success'] = $success;
                 $jsonArray['error'] = $error;
 
+                } else if($path[2]=="edit"){
+
+
+                $id=$_POST['id'];
+                $title=$_POST['title'];
+                $text=$_POST['text'];        
+
+                $this->articleMan->editArticle($id, $title, $text);
+                $success = $this->articleMan->successEditArticle($title,$text);
+                $error = $this->articleMan->getErrorEditArticle($title,$text);
+
+                $jsonArray['success'] = $success;
+                $jsonArray['error'] = $error;
+                    
+                } else if($path[2]=="delete"){
+
+                
+                $id=$_GET['id'];
+            
+                $this->articleMan->deleteArticle($id);
+                
+                
                 } else {
 
                 $id = $_GET["id"];
 
-                $data = $this->articleMan->getArticleData($id);
                 $success = $this->articleMan->successArticle($id);
+                $data = $this->articleMan->getArticleData($id);
                 $error = $this->articleMan->getErrorArticle($id);
                 $next = $this->articleMan->nextArticle($id);
                 $previous = $this->articleMan->previousArticle($id);
@@ -95,7 +118,18 @@ class Router
                 $jsonArray['next'] = $next;
                 $jsonArray['previous'] = $previous;
                 $jsonArray['error'] = $error;
+
                 }
+
+            } else if($path[1]=="person"){
+
+                $id = $_GET["id"];
+
+                $success = $this->personMan->personExists($id);
+                $data = $this->personMan->getPersonData($id);
+
+                $jsonArray['success'] = $success;
+                $jsonArray['data'] = $data;
             }
             
 

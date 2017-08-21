@@ -1,6 +1,5 @@
 <?php
 
-
 class PersonManager
 {
     public $db;
@@ -9,11 +8,11 @@ class PersonManager
         $this->db = $db;
     }
     
-    public function addPerson($name, $lastName, $gender, $email, $telephone, $userType,$username,$password)
+    public function addPerson($id,$name, $lastName, $gender, $email, $telephone, $userType,$username,$password)
     {
-        $insert    = "INSERT INTO person (name,lastName,gender,email,telephone,userType,username,password) VALUES (:name,:lastName,:gender,:email,:telephone,:userType,:username,:password)";
+        $insert    = "INSERT INTO person (id,name,lastName,gender,email,telephone,userType,username,password) VALUES (:id,:name,:lastName,:gender,:email,:telephone,:userType,:username,:password)";
         $statement = $this->db->prepare($insert);
-        $statement->execute([':name'=> $name,':lastName'=> $lastName,':gender'=> $gender,':email'=> $email,':telephone'=> $telephone,':userType'=> $userType,':username'=> $username,':password'=> $password ]
+        $statement->execute([':id'=>$id, ':name'=> $name,':lastName'=> $lastName,':gender'=> $gender,':email'=> $email,':telephone'=> $telephone,':userType'=> $userType,':username'=> $username,':password'=> $password ]
         );
     }
     
@@ -29,6 +28,25 @@ class PersonManager
         $statement = $this->db->prepare($update);
         $statement->execute([':id'=> $id,':name'=> $name,':lastName'=> $lastName,':gender'=> $gender,':email'=> $email,':telephone'=> $telephone,':userType'=> $userType]);
     }
+
+    public function getPersonData($id){
+
+        $person = "SELECT * FROM person WHERE id=:id";
+        $statement = $this->db->prepare($article);
+        $statement->execute([':id' => $id]);
+        $personData = $statement->fetchAll()[0];
+
+        return $personData;
+    }
+
+    public function personExists($id){
+
+        $success=$this->getPersonData($id);
+        if (empty($success)) return "false";
+        else return "true";
+
+    }
+    
     
 }
 
