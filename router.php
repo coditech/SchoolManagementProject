@@ -97,7 +97,7 @@ class Router
                 $jsonArray['error'] = $error;
                 }
             }
-
+            
 
             header('Content-Type: application/json');
             echo json_encode($jsonArray);

@@ -6,7 +6,7 @@ require_once("./dbManagers/image-manager.php");
 class ArticleManager
 {
     public $db;
-
+    
     public function __construct(PDO $db)
     {
         $this->db = $db;
@@ -17,18 +17,19 @@ class ArticleManager
     {
 	if ($this->successAddArticle($title, $text, $files) == "true")
 		{
-            
+
 		$date = date("Y/m/d");
 		$insert = "INSERT INTO article (title,text,date) VALUES (:title,:text,:date)";
 		$statement = $this->db->prepare($insert);
 		$statement->execute([':title' => $title, ':text' => $text,':date'=>$date]);
         
 		$id = $this->db->lastInsertId();
-
+        
 		foreach($_FILES["files"]["tmp_name"] as $key => $tmp_name)
 			{
 			$file_name = $_FILES["files"]["name"][$key];
 			$file_tmp = $_FILES["files"]["tmp_name"][$key];
+            $ext=pathinfo($file_name,PATHINFO_EXTENSION);
 			if (!file_exists("images/" . $file_name))
 				{
 				move_uploaded_file($file_tmp = $_FILES["files"]["tmp_name"][$key], "images/" . $file_name);
