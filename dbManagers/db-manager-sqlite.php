@@ -10,7 +10,7 @@ catch (PDOException $e) {
 $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 $db->exec("CREATE TABLE IF NOT EXISTS person
                                             (
-                                                id INT  PRIMARY KEY AUTOINCREMENT,
+                                                id INT  PRIMARY KEY,
                                                 name VARCHAR(255),
                                                 lastName VARCHAR(255),
                                                 gender VARCHAR(30),

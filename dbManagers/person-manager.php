@@ -24,7 +24,7 @@ class PersonManager
     }
 
     public function editPerson($id,$name, $lastName, $gender, $email, $telephone, $userType,$username,$password){
-        $update = "UPDATE person SET name=:name, lastName=:lastName, gender=:gender, email=:email,telephone=:telephone,username=:username,password=:password WHERE id=:id";
+        $update = "UPDATE person SET      name=:name,    lastName=:lastName,      gender=:gender,     email=:email,      telephone=:telephone,       userType=:userType,                     username=:username,  password=:password WHERE id=:id";
         $statement = $this->db->prepare($update);
         $statement->execute([':id'=> $id,':name'=> $name,':lastName'=> $lastName,':gender'=> $gender,':email'=> $email,':telephone'=> $telephone,':userType'=> $userType,':username'=> $username,':password'=> $password]);
     }
