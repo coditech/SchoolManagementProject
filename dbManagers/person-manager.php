@@ -40,21 +40,21 @@ class PersonManager
     }
 
 
-    public function getPeopleByType($usertype){
+    public function getPeopleByType($userType){
 
-        $people = "SELECT * FROM person WHERE usertype=:usertype";
+        $people = "SELECT * FROM person WHERE userType=:userType";
         $statement = $this->db->prepare($people);
-        $statement->execute([':usertype' => $usertype]);
-        $peopleData = $statement->fetchAll()[0];
+        $statement->execute([':userType' => $userType]);
+        $peopleData = $statement->fetchAll();
 
         return $peopleData;
     }
 
     public function getPeopleByName($name,$lastName){
 
-        $people = "SELECT * FROM person WHERE name LIKE '%:name%' AND lastName LIKE '%:lastName%'";
+        $people = "SELECT * FROM person WHERE name LIKE :name AND lastName LIKE :lastName";
         $statement = $this->db->prepare($people);
-        $statement->execute([':name'=>$name,':lastName'=>$lastName]);
+        $statement->execute([':name'=>'%'.$name.'%',':lastName'=>'%'.$lastName.'%']);
         $peopleData = $statement->fetchAll();
 
         return $peopleData;
@@ -89,7 +89,7 @@ class PersonManager
 
     
     public function getErrorPersonId($id){
-        if($this->personExists($id)=="false"){
+        if($this->personIdExists($id)=="false"){
             return "Invalid Id or Id does not exist";
         } else {
             return "All Good No Errors";

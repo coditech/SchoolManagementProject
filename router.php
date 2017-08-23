@@ -152,10 +152,11 @@ class Router
                     } else if($path[3]=="type"){
 
                         $userType  = $_POST['userType'];
+                        
 
-                        $success=$this->personMan->getErrorType($usertype);
-                        $data=$this->personMan->getPeopleByType($usertype);
-                        $error=$this->personMan->typeExists($usertype);
+                        $success=$this->personMan->typeExists($userType);
+                        $data=$this->personMan->getPeopleByType($userType);
+                        $error=$this->personMan->getErrorType($userType);
                         
 
                         $jsonArray['success']  = $success;
@@ -207,4 +208,4 @@ class Router
         
     }
 }
-?> Back
+?> 
