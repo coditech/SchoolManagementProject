@@ -133,21 +133,55 @@ class Router
                     
                     $id = $_POST['id'];
                     
-                    $this->personMan->editPerson($id);
+                    $this->personMan->deletePerson($id);
                     
-                } else if($path[2]==""){
+                } else if($path[2] == "info"){
 
-                }
-                
+                    if($path[3]=="id"){
+
+                        $id        = $_POST['id'];
+                        
+                        $success=$this->personMan->personIdExists($id);
+                        $data=$this->personMan->getPersonData($id);
+                        $error=$this->personMan->getErrorPersonId($id);
+
+                        $jsonArray['success']  = $success;
+                        $jsonArray['data']     = $data;
+                        $jsonArray['error']    = $error;
+
+                    } else if($path[3]=="type"){
+
+                        $userType  = $_POST['userType'];
+
+                        $success=$this->personMan->getErrorType($usertype);
+                        $data=$this->personMan->getPeopleByType($usertype);
+                        $error=$this->personMan->typeExists($usertype);
+                        
+
+                        $jsonArray['success']  = $success;
+                        $jsonArray['data']     = $data;
+                        $jsonArray['error']    = $error;
+
+                    } else if ($path[3]=="name"){
+
+                        $name = $_POST['name'];
+                        $lastName = $_POST['lastName'];
+
+                        $success = $this->personMan->getErrorName($name,$lastName);
+                        $data  = $this->personMan->getPeopleByName($name,$lastName);
+                        $error = $this->personMan->nameExists($name, $lastName);
+
+                        $jsonArray['success']  = $success;
+                        $jsonArray['data']     = $data;
+                        $jsonArray['error']    = $error;
+
+                    }
+                    
+
+                }    
                 
                 else {
-                    $id                   = $_GET["id"];
-                    $success              = $this->personMan->personExists($id);
-                    $data                 = $this->personMan->getPersonData($id);
-                    $error                = $this->personMan->getErrorPerson($id);
-                    $jsonArray['success'] = $success;
-                    $jsonArray['data']    = $data;
-                    $jsonArray['error']   = $error;
+                    echo "what r u doin?";
                 }
             }
             
