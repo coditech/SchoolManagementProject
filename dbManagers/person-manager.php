@@ -39,52 +39,12 @@ class PersonManager
         return $personData;
     }
 
-
-    public function getPeopleByType($userType){
-
-        $people = "SELECT * FROM person WHERE userType=:userType";
-        $statement = $this->db->prepare($people);
-        $statement->execute([':userType' => $userType]);
-        $peopleData = $statement->fetchAll();
-
-        return $peopleData;
-    }
-
-    public function getPeopleByName($name,$lastName){
-
-        $people = "SELECT * FROM person WHERE name LIKE :name AND lastName LIKE :lastName";
-        $statement = $this->db->prepare($people);
-        $statement->execute([':name'=>'%'.$name.'%',':lastName'=>'%'.$lastName.'%']);
-        $peopleData = $statement->fetchAll();
-
-        return $peopleData;
-    }
-
-
     public function personIdExists($id){
 
         $success=$this->getPersonData($id);
         if (empty($success)) return "false";
         else return "true";
 
-    }
-
-    public function nameExists($name, $lastName){
-
-	    if (!empty($name) || !empty($lastName))
-	    	{
-	    	$success = $this->getPeopleByName($name, $lastName);
-	    	if (empty($success)) return "false";
-	    	  else return "true";
-	    	}
-
-	    return "false";
-	}
-
-    public function typeExists($usertype){
-        $success=$this->getPeopleByType($usertype);
-        if (empty($success)) return "false";
-        else return "true";
     }
 
     
@@ -113,8 +73,29 @@ class PersonManager
         else return "All Good No Errors";
     }
 
-
-
+    
+    public function search($id,$name, $lastName, $gender, $email, $telephone, $userType,$username){
+        $search = "SELECT * FROM person WHERE
+                                            id LIKE :id AND
+                                            name LIKE :name AND
+                                            lastName LIKE :lastName AND
+                                            gender LIKE :gender AND
+                                            email LIKE :email AND
+                                            telephone LIKE :telephone AND
+                                            userType LIKE :userType AND
+                                            username LIKE :username ";
+        $statement = $this->db->prepare($search);
+        $statement->execute([':id' => '%'.$id.'%',
+                             ':name' => '%'.$name.'%',
+                             ':lastName' => '%'.$lastName.'%',
+                             ':gender' => '%'.$gender.'%',
+                             ':email' => '%'.$email.'%',
+                             ':telephone' => '%'.$telephone.'%',
+                             ':userType' => '%'.$userType.'%',
+                             ':username' => '%'.$username.'%']);
+        $searchData = $statement->fetchAll();
+        return $searchData;
+    }
 }
 
 ?>

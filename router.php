@@ -96,9 +96,7 @@ class Router
                     $jsonArray['previous'] = $previous;
                     $jsonArray['error']    = $error;
                 }
-                
-                // Change GET to POST after testing
-                
+                              
             } else if ($path[1] == "person") {
                 
                 if ($path[2] == "add") {
@@ -149,41 +147,26 @@ class Router
                         $jsonArray['data']     = $data;
                         $jsonArray['error']    = $error;
 
-                    } else if($path[3]=="type"){
+                    }  else if ($path[3]=="search"){
 
-                        $userType  = $_POST['userType'];
-                        
 
-                        $success=$this->personMan->typeExists($userType);
-                        $data=$this->personMan->getPeopleByType($userType);
-                        $error=$this->personMan->getErrorType($userType);
-                        
+                    $id        = $_POST['id'];
+                    $name      = $_POST['name'];
+                    $lastName  = $_POST['lastName'];
+                    $gender    = $_POST['gender'];
+                    $email     = $_POST['email'];
+                    $telephone = $_POST['telephone'];
+                    $userType  = $_POST['userType'];
+                    $username  = $_POST['username'];
 
-                        $jsonArray['success']  = $success;
-                        $jsonArray['data']     = $data;
-                        $jsonArray['error']    = $error;
-
-                    } else if ($path[3]=="name"){
-
-                        $name = $_POST['name'];
-                        $lastName = $_POST['lastName'];
-
-                        $success = $this->personMan->getErrorName($name,$lastName);
-                        $data  = $this->personMan->getPeopleByName($name,$lastName);
-                        $error = $this->personMan->nameExists($name, $lastName);
-
-                        $jsonArray['success']  = $success;
-                        $jsonArray['data']     = $data;
-                        $jsonArray['error']    = $error;
+                    $data=$this->personMan->search($id,$name, $lastName, $gender, $email, $telephone, $userType,$username);
+                    $jsonArray['data']     = $data;
 
                     }
                     
 
                 }    
                 
-                else {
-                    echo "what r u doin?";
-                }
             }
             
             header('Content-Type: application/json');

@@ -26,6 +26,42 @@ public $db;
     }
 
 
+    public function getCourseData($id){
+
+        $course = "SELECT * FROM course WHERE id=:id";
+        $statement = $this->db->prepare($person);
+        $statement->execute([':id' => $id]);
+        $courseData = $statement->fetchAll()[0];
+        
+        return $courseData;
+
+    }
+
+    public function search($id,$courseCode, $courseName, $courseMaxGrade, $courseYear, $courseClass, $teacherId){
+
+        $search ="SELECT * FROM course WHERE
+                                            id LIKE :id AND
+                                            courseCode LIKE :courseCode AND
+                                            courseMaxGrade LIKE :courseMaxGrade AND
+                                            courseYear LIKE :courseYear AND
+                                            courseClass LIKE :courseClass AND
+                                            teacherId LIKE :teacherId";
+
+        $statement = $this->db->prepare($search);
+
+        $statement->execute([':id'=>'%'.$id.'%',
+                             ':courseCode'=>'%'.$courseCode.'%',
+                             ':courseMaxGrade'=>'%'.$courseMaxGrade.'%',
+                             ':courseYear'=>'%'.$courseYear.'%',
+                             ':courseClass'=>'%'.$courseClass.'%',
+                             ':teacherId'=>'%'.$teacherId.'%']);
+
+        $searchData = $statement->fetchAll();
+
+        return $searchData;
+    }
+
+
 }
 
 
