@@ -39,6 +39,29 @@ class PersonManager
         return $personData;
     }
 
+    public function login($username,$password){
+
+        $person = "SELECT * FROM person WHERE username = :username AND password = :password";
+        $statement = $this->db->prepare($person);
+        $statement->execute([':username'=>$username,':password'=>$password]);
+
+        $personData = $statement->fetchAll();
+
+        if(empty($personData)){
+            return 'false';
+        } else{
+            $_SESSION['id']=$personData['id'];
+            $_SESSION['username']=$personData['username'];
+            $_SESSION['userType']=$personData['userType'];
+            return 'true';
+        }
+        
+    }
+
+    public function logout(){
+
+    }
+
     public function personIdExists($id){
 
         $success=$this->getPersonData($id);
@@ -71,6 +94,14 @@ class PersonManager
             return "Name Does Not Exist";
         }
         else return "All Good No Errors";
+    }
+
+    public function getErrorLogin($username,$password){
+
+        if($this->loginUser($username,$password)=="false"){
+            return "Incorrect Username Or Password";
+        }else return "All Good No Errors";
+
     }
 
     

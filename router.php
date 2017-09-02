@@ -12,6 +12,7 @@ class Router
         $this->db         = $db;
         $this->articleMan = new ArticleManager($db);
         $this->personMan  = new PersonManager($db);
+        session_start();
     }
     
     public function getUrl()
@@ -150,22 +151,38 @@ class Router
                     }  else if ($path[3]=="search"){
 
 
-                    $id        = $_POST['id'];
-                    $name      = $_POST['name'];
-                    $lastName  = $_POST['lastName'];
-                    $gender    = $_POST['gender'];
-                    $email     = $_POST['email'];
-                    $telephone = $_POST['telephone'];
-                    $userType  = $_POST['userType'];
-                    $username  = $_POST['username'];
+                        $id        = $_POST['id'];
+                        $name      = $_POST['name'];
+                        $lastName  = $_POST['lastName'];
+                        $gender    = $_POST['gender'];
+                        $email     = $_POST['email'];
+                        $telephone = $_POST['telephone'];
+                        $userType  = $_POST['userType'];
+                        $username  = $_POST['username'];
 
-                    $data=$this->personMan->search($id,$name, $lastName, $gender, $email, $telephone, $userType,$username);
-                    $jsonArray['data']     = $data;
+                        $data=$this->personMan->search($id,$name, $lastName, $gender, $email, $telephone, $userType,$username);
+                        $jsonArray['data']     = $data;
 
                     }
                     
 
-                }    
+                } else if($path[2]=="login"){
+
+                    $username = $_POST['username'];
+                    $password = $_POST['password'];
+
+                    $success = $this->personMan->login($username,$password);
+                    $error = $this->personMan->getErrorLogin($username,$password);
+
+                    $jsonArray['success'] = $success;
+                    $jsonArray['error'] = $error;
+
+                } else if($path[2]=="logout"){
+
+                    $this->personMan->lougout();
+                    session_destroy();
+
+                }
                 
             }
             

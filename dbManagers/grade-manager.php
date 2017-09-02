@@ -20,7 +20,6 @@ class GradeManager{
     }
 
     public function editGrade($id,$score,$semester,$year,$courseId,$studentId){
-        $arr = func_get_args();
         $update = "UPDATE grade SET score=:score, semester=:semester, year=:year, courseId=:courseId,studentId=:studentId WHERE id=:id";
         $statement = $this->db->prepare($update);
         $statement->execute([':id'=> $id,':score'=> $score,':semester'=> $semester,':year'=> $year,':courseId'=> $courseId,':studentId'=> $studentId]);
@@ -29,11 +28,27 @@ class GradeManager{
     public function smallerThanMaxGrade($id, $score){
         $maxGrade= "SELECT c.courseMaxGrade FROM course c, grade g WHERE c.:id = g.courseId ";
         $statement = $this->db->prepare($maxGrade);
-        $statement->bindParam(':id', $id);
-        $statement->execute();
+        $statement->execute([':id'=> $id]);
 
         return $score < $statement;
 
+    }
+
+    public function search($score,$semester,$year,$courseId,$studentId){
+
+        $grades = "SELECT * FROM course WHERE score > :score 
+                                        AND semester LIKE :semester
+                                        AND year LIKE :year
+                                        AND courseId LIKE :courseId
+                                        AND studentId LIKE :studentId";
+        if ($score = null) {
+            $score = 0;
+        }
+        $statement = $this->db->prepare($grades);
+        $statement->execute([':score'=> $score,':semester'=> '%'.$semester.'%',':year'=> '%'.$year.'%',':courseId'=> '%'.$courseId.'%',':studentId'=> '%'.$studentId.'%']);
+
+        return $statement->fetchAll();
+        
     }
 
 }
