@@ -40,11 +40,11 @@ class GradeManager{
 
     }
 
-    public function getStudentGrades($studentId,$year){
+    public function getStudentGrades($studentId){
 
-        $grades = "SELECT * FROM grade WHERE studentId = :studentId AND year = :year";
+        $grades = "SELECT * FROM grade WHERE studentId = :studentId ORDER BY year ASC";
         $statement = $this->db->prepare($grades);
-        $statement->execute([':studentId'=> $studentId,':year'=>$year]);
+        $statement->execute([':studentId'=> $studentId]);
         $gradeData = $statement->fetchAll();
 
         $data = array();

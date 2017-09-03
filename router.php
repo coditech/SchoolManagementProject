@@ -3,6 +3,7 @@
 require_once("./dbManagers/article-manager.php");
 require_once("./dbManagers/person-manager.php");
 require_once("./dbManagers/grade-manager.php");
+require_once("./dbManagers/student-manager.php");
 
 
 class Router
@@ -15,6 +16,7 @@ class Router
         $this->articleMan = new ArticleManager($db);
         $this->personMan  = new PersonManager($db);
         $this->gradeMan = new GradeManager($db);
+        $this->studentMan = new StudentManager($db);
         session_start();
     }
     
@@ -186,12 +188,30 @@ class Router
 
                 } else if($path[2]=="student"){
 
+                    if($path[3]=="grades"){
+
+                    //THE ID SHOULD BE TAKEN FROM THE SESSION AFTER TESTING
                     $id=$_GET['id'];
-                    $year=$_GET['year'];
 
                     $data = $this->gradeMan->getStudentGrades($id,$year);
 
                     $jsonArray['data']=$data;
+                    }
+
+                } else if($path[2]=="parent"){
+
+                    if($path[3]=="children"){
+
+                        //THE ID SHOULD BE TAKEN FROM THE SESSION AFTER TESTING
+                        $id = $_GET['id'];
+
+                        $data = $this->studentMan->getChildren($id);
+
+                        $jsonArray['data']=$data;
+
+                    } else if($path[3]=="messages"){
+                        
+                    }
                 }
                 
             }

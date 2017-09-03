@@ -62,7 +62,7 @@ class PersonManager
     }
 
     public function logout(){
-                            session_destroy();
+            session_destroy();
     }
 
     public function personIdExists($id){

@@ -70,9 +70,8 @@ $db->exec("CREATE TABLE IF NOT EXISTS image
 
 $db->exec("CREATE TABLE IF NOT EXISTS student
                                             (
-                                                id INT  PRIMARY KEY AUTOINCREMENT,
-                                                parentId INT,
-                                                class VARCHAR(255)
+                                                id INT  PRIMARY KEY,
+                                                parentId INT
                                             );");
                                             
 ?>
