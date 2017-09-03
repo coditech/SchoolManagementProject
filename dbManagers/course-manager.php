@@ -29,7 +29,7 @@ public $db;
     public function getCourseData($id){
 
         $course = "SELECT * FROM course WHERE id=:id";
-        $statement = $this->db->prepare($person);
+        $statement = $this->db->prepare($course);
         $statement->execute([':id' => $id]);
         $courseData = $statement->fetchAll()[0];
         

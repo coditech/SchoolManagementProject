@@ -1,10 +1,15 @@
 <?php
 
+
+require_once("./dbManagers/course-manager.php");
+
+
 class GradeManager{
     public $db;
     
     public function __construct(PDO $db){
         $this->db = $db;
+        $this->courseMan = new CourseManager($db);
     }
 
     public function addGrade($score,$semester,$year,$courseId,$studentId){
@@ -26,12 +31,40 @@ class GradeManager{
     }
 
     public function smallerThanMaxGrade($id, $score){
+
         $maxGrade= "SELECT c.courseMaxGrade FROM course c, grade g WHERE c.:id = g.courseId ";
         $statement = $this->db->prepare($maxGrade);
         $statement->execute([':id'=> $id]);
 
         return $score < $statement;
 
+    }
+
+    public function getStudentGrades($studentId,$year){
+
+        $grades = "SELECT * FROM grade WHERE studentId = :studentId AND year = :year";
+        $statement = $this->db->prepare($grades);
+        $statement->execute([':studentId'=> $studentId,':year'=>$year]);
+        $gradeData = $statement->fetchAll();
+
+        $data = array();
+
+        foreach ($gradeData as $grade){
+            $dataTemp = array();
+
+            $courseData = $this->courseMan->getCourseData($grade['courseId']);
+
+            $dataTemp['id']=$grade['id'];
+            $dataTemp['score']=$grade['score'];
+            $dataTemp['semester']=$grade['semester'];
+            $dataTemp['year']=$grade['year'];
+            $dataTemp['courseId']=$grade['courseId'];
+            $dataTemp['studentId']=$grade['studentId'];
+            $dataTemp['courseName']=$courseData['courseName'];
+            $data[]=$dataTemp;
+        }
+        
+            return $data;
     }
 
     public function search($score,$semester,$year,$courseId,$studentId){

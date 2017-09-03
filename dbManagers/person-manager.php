@@ -1,5 +1,7 @@
 <?php
 
+
+
 class PersonManager
 {
     public $db;
@@ -39,6 +41,7 @@ class PersonManager
         return $personData;
     }
 
+
     public function login($username,$password){
 
         $person = "SELECT * FROM person WHERE username = :username AND password = :password";
@@ -59,7 +62,7 @@ class PersonManager
     }
 
     public function logout(){
-
+                            session_destroy();
     }
 
     public function personIdExists($id){

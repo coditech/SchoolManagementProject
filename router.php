@@ -1,7 +1,9 @@
 <?php
-require_once("./dbManagers/article-manager.php");
 
+require_once("./dbManagers/article-manager.php");
 require_once("./dbManagers/person-manager.php");
+require_once("./dbManagers/grade-manager.php");
+
 
 class Router
 {
@@ -12,6 +14,7 @@ class Router
         $this->db         = $db;
         $this->articleMan = new ArticleManager($db);
         $this->personMan  = new PersonManager($db);
+        $this->gradeMan = new GradeManager($db);
         session_start();
     }
     
@@ -180,8 +183,15 @@ class Router
                 } else if($path[2]=="logout"){
 
                     $this->personMan->lougout();
-                    session_destroy();
 
+                } else if($path[2]=="student"){
+
+                    $id=$_GET['id'];
+                    $year=$_GET['year'];
+
+                    $data = $this->gradeMan->getStudentGrades($id,$year);
+
+                    $jsonArray['data']=$data;
                 }
                 
             }
