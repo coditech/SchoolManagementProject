@@ -193,7 +193,7 @@ class Router
                     //THE ID SHOULD BE TAKEN FROM THE SESSION AFTER TESTING
                     $id=$_GET['id'];
 
-                    $data = $this->gradeMan->getStudentGrades($id,$year);
+                    $data = $this->gradeMan->getStudentGrades($id);
 
                     $jsonArray['data']=$data;
                     }
@@ -205,12 +205,22 @@ class Router
                         //THE ID SHOULD BE TAKEN FROM THE SESSION AFTER TESTING
                         $id = $_GET['id'];
 
-                        $data = $this->studentMan->getChildren($id);
+                        $data = $this->personMan->getChildren($id);
 
                         $jsonArray['data']=$data;
 
+                    } else if($path[3]=="teachers"){
+
+                        //THE ID SHOULD BE TAKEN FROM THE SESSION AFTER TESTING
+                        $id = $_GET['id'];
+
+                        $data = $this->personMan->getTeachers($id);
+
+                        $jsonArray['data']=$data;
+
+
                     } else if($path[3]=="messages"){
-                        
+
                     }
                 }
                 

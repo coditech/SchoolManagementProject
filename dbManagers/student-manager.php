@@ -1,4 +1,5 @@
 <?php
+
 class StudentManager{
 
     public $db;
@@ -24,14 +25,8 @@ class StudentManager{
         $statement = $this->db->prepare($update);
         $statement->execute([':id'=> $id,':parentId'=> $parentId]);
     }
-    
-    public function getChildren($parentId){
-        $children = "SELECT * FROM person  p, student  s WHERE parentId = :parentId AND p.id = s.id";
-        $statement = $this->db->prepare($children);
-        $statement->execute([':parentId'=>$parentId]);
 
-        return $statement->fetchAll();
-    }
+
 
 }
 

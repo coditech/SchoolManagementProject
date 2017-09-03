@@ -41,6 +41,26 @@ class PersonManager
         return $personData;
     }
 
+    public function getChildren($parentId){
+
+        $children = "SELECT p.id, p.name, p.lastName  FROM person  p, student  s WHERE parentId = :parentId AND p.id = s.id";
+        $statement = $this->db->prepare($children);
+        $statement->execute([':parentId'=>$parentId]);
+
+        return $statement->fetchAll();
+    }
+
+    public function getTeachers($parentId){
+        $teachers= "SELECT DISTINCT p.id, p.name, p.lastName FROM person p, student s, course c WHERE s.class=c.courseClass
+                                                                                                AND   s.parentId=:parentId
+                                                                                                AND   c.teacherId=p.id ";
+        $statement = $this->db->prepare($teachers);
+        $statement->execute([':parentId'=>$parentId]);
+
+        return $statement->fetchAll();
+
+    }
+
 
     public function login($username,$password){
 
