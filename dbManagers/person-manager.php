@@ -61,6 +61,40 @@ class PersonManager
 
     }
 
+    public function getStudents($teacherId){
+        $students = "SELECT p.id, p.name, p.lastName FROM person p, student s, course c WHERE s.class=c.courseClass
+                                                                                        AND   c.teacherId=:teacherId
+                                                                                        AND   s.id = p.id  ";
+        $statement = $this->db->prepare($students);
+        $statement->execute([':teacherId'=>$teacherId]);
+
+        $studentsData = $statement->fetchAll();
+        $data = array();
+
+        foreach($studentsData as $student){
+            $dataTemp = array();
+            $parent   = $this->getParent($student['id']);
+            $dataTemp['studentid']=$student['id'];
+            $dataTemp['studentname']=$student['name'];
+            $dataTemp['studentlastname']=$student['lastName'];
+            $dataTemp['parentid']=$parent['id'];
+            $dataTemp['parentid']=$parent['name'];
+            $dataTemp['parentid']=$parent['lastName'];
+            $data[] = $dataTemp;
+        }
+
+        return $data;
+
+    }
+
+    public function getParent($studentId){
+        $parent = "SELECT p.id, p.name, p.lastName,p.telephone FROM person p, student s WHERE s.id=:studentId AND p.id = s.parentId";
+        $statement = $this->db->prepare($parent);
+        $statement->execute([':studentId'=>$studentId]);
+
+        return $statement->fetchAll()[0];
+    }
+
 
     public function login($username,$password){
 

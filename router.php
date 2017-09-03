@@ -171,22 +171,7 @@ class Router
                     }
                     
 
-                } else if($path[2]=="login"){
-
-                    $username = $_POST['username'];
-                    $password = $_POST['password'];
-
-                    $success = $this->personMan->login($username,$password);
-                    $error = $this->personMan->getErrorLogin($username,$password);
-
-                    $jsonArray['success'] = $success;
-                    $jsonArray['error'] = $error;
-
-                } else if($path[2]=="logout"){
-
-                    $this->personMan->lougout();
-
-                } else if($path[2]=="student"){
+                }else if($path[2]=="student"){
 
                     if($path[3]=="grades"){
 
@@ -222,7 +207,40 @@ class Router
                     } else if($path[3]=="messages"){
 
                     }
-                }
+
+
+                } else if($path[2]=="teacher"){
+
+                    if($path[3]=="students"){
+
+                        //THE ID SHOULD BE TAKEN FROM THE SESSION AFTER TESTING
+                        $id=$_GET['id'];
+
+                        $data = $this->personMan->getStudents($id);
+
+                        $jsonArray['data']=$data;
+
+
+                    } else if($path[3]=="messages"){
+
+                    }
+
+                } else if($path[2]=="login"){
+
+                    $username = $_POST['username'];
+                    $password = $_POST['password'];
+
+                    $success = $this->personMan->login($username,$password);
+                    $error = $this->personMan->getErrorLogin($username,$password);
+
+                    $jsonArray['success'] = $success;
+                    $jsonArray['error'] = $error;
+
+                } else if($path[2]=="logout"){
+
+                    $this->personMan->lougout();
+
+                } 
                 
             }
             
