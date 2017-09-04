@@ -2,8 +2,10 @@
 
 require_once("./dbManagers/article-manager.php");
 require_once("./dbManagers/person-manager.php");
+require_once("./dbManagers/course-manager.php");
 require_once("./dbManagers/grade-manager.php");
 require_once("./dbManagers/student-manager.php");
+require_once("./dbManagers/message-manager.php");
 
 
 class Router
@@ -15,8 +17,10 @@ class Router
         $this->db         = $db;
         $this->articleMan = new ArticleManager($db);
         $this->personMan  = new PersonManager($db);
+        $this->courseMan  = new CourseManager($db);
         $this->gradeMan = new GradeManager($db);
         $this->studentMan = new StudentManager($db);
+        $this->messageMan = new MessageManager($db);
         session_start();
     }
     
@@ -39,6 +43,7 @@ class Router
     {
         $path      = $this->getPathArray();
         $jsonArray = array();
+
         if ($path[0] == 'api') {
             
             
@@ -68,7 +73,9 @@ class Router
             }
             
             else if ($path[1] == "articles") {
+
                 if ($path[2] == "add") {
+
                     $title = $_POST['title'];
                     $text  = $_POST['text'];
                     $files = $_FILES['files'];
@@ -77,7 +84,9 @@ class Router
                     $error                = $this->articleMan->getErrorAddArticle($title, $text, $files);
                     $jsonArray['success'] = $success;
                     $jsonArray['error']   = $error;
+
                 } else if ($path[2] == "edit") {
+
                     $id    = $_POST['id'];
                     $title = $_POST['title'];
                     $text  = $_POST['text'];
@@ -86,8 +95,9 @@ class Router
                     $error                = $this->articleMan->getErrorEditArticle($title, $text);
                     $jsonArray['success'] = $success;
                     $jsonArray['error']   = $error;
+
                 } else if ($path[2] == "delete") {
-                    $id = $_GET['id'];
+                    $id = $_POST['id'];
                     $this->articleMan->deleteArticle($id);
                 } else {
                     $id                    = $_GET["id"];
@@ -103,6 +113,89 @@ class Router
                     $jsonArray['error']    = $error;
                 }
                               
+            } else if($path[1]=="course"){
+
+                if($path[2]=="add"){
+                    
+                    $courseCode = $_POST['courseCode'];
+                    $courseName = $_POST['courseName'];
+                    $courseMaxGrade = $_POST['courseMaxGrade'];
+                    $courseYear = $_POST['courseYear'];
+                    $courseClass = $_POST['courseClass'];
+                    $teacherId = $_POST['teacherId'];
+                    $this->courseMan->addCourse($courseCode, $courseName, $courseMaxGrade, $courseYear, $courseClass, $teacherId );
+
+                }else if($path[2]=="edit"){
+
+                    $id = $_POST['id'];
+                    $courseCode = $_POST['courseCode'];
+                    $courseName = $_POST['courseName'];
+                    $courseMaxGrade = $_POST['courseMaxGrade'];
+                    $courseYear = $_POST['courseYear'];
+                    $courseClass = $_POST['courseClass'];
+                    $teacherId = $_POST['teacherId'];
+                    $this->courseMan->editCourse($id,$courseCode, $courseName, $courseMaxGrade, $courseYear, $courseClass, $teacherId );
+
+                }else if($path[2]=="delete"){
+                    
+                    $id = $_POST['id'];
+                    $this->courseMan->deleteCourse($id);
+
+                }else if($path[2]=="search"){
+
+                    $id = $_POST['id'];
+                    $courseCode = $_POST['courseCode'];
+                    $courseName = $_POST['courseName'];
+                    $courseMaxGrade = $_POST['courseMaxGrade'];
+                    $courseYear = $_POST['courseYear'];
+                    $courseClass = $_POST['courseClass'];
+                    $teacherId = $_POST['teacherId'];
+
+                    $data = $this->courseMan->search($id,$courseCode, $courseName, $courseMaxGrade, $courseYear, $courseClass, $teacherId);
+
+                    $jsonArray['data']=$data;
+                }
+
+
+            } else if($path[1]=="grade"){
+
+                if($path[2]=="add"){
+
+                    $score = $_POST['score'];
+                    $semester = $_POST['semester'];
+                    $year = $_POST['year'];
+                    $courseId = $_POST['courseId'];
+                    $studentId = $_POST['studentId'];
+                    $this->gradeMan->addGrade($score,$semester,$year,$courseId,$studentId);
+
+                }else if($path[2]=="edit"){
+
+                    $id = $_POST['id'];
+                    $score = $_POST['score'];
+                    $semester = $_POST['semester'];
+                    $year = $_POST['year'];
+                    $courseId = $_POST['courseId'];
+                    $studentId = $_POST['studentId'];
+                    $this->gradeMan->editGrade($id,$score,$semester,$year,$courseId,$studentId);
+
+                }else if($path[2]=="delete"){
+
+                    $id = $_POST['id'];
+                    $this->gradeMan->deleteGrade($id);
+
+                }else if($path[2]=="search"){
+
+                   
+                    $score = $_POST['score'];
+                    $semester = $_POST['semester'];
+                    $year = $_POST['year'];
+                    $courseId = $_POST['courseId'];
+                    $studentId = $_POST['studentId'];
+
+                    $data = $this->gradeMan->search($score,$semester,$year,$courseId,$studentId);
+                    $jsonArray['data'] = $data;
+                }
+
             } else if ($path[1] == "person") {
                 
                 if ($path[2] == "add") {

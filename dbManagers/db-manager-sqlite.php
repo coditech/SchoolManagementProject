@@ -53,12 +53,11 @@ $db->exec("CREATE TABLE IF NOT EXISTS course
 
 
 $db->exec("CREATE TABLE IF NOT EXISTS message
-                                            (
+                                            (   id INT  PRIMARY KEY AUTOINCREMENT,
                                                 senderId INT ,
                                                 recipientId INT,
                                                 date DATE ,
-                                                text TEXT,
-                                                PRIMARY KEY(senderId, recipientId, date)
+                                                text TEXT
                                             );");
 
 $db->exec("CREATE TABLE IF NOT EXISTS image
