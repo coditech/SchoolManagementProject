@@ -193,6 +193,7 @@ class Router
                     $studentId = $_POST['studentId'];
 
                     $data = $this->gradeMan->search($score,$semester,$year,$courseId,$studentId);
+
                     $jsonArray['data'] = $data;
                 }
 
@@ -297,6 +298,10 @@ class Router
                         $jsonArray['data']=$data;
 
 
+                    } else if($path[3]=="messages"){
+
+
+                     
                 } else if($path[2]=="teacher"){
 
                     if($path[3]=="students"){
@@ -308,7 +313,9 @@ class Router
 
                         $jsonArray['data']=$data;
 
-                    } 
+                    }else if($path[3]=="messages"){
+
+                    }
 
                 } else if($path[2]=="login"){
 
