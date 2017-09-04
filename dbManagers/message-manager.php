@@ -1,10 +1,13 @@
 <?php 
 
+require_once("./dbManagers/person-manager.php");
+
 class MessageManager{
     public $db;
     
     public function __construct(PDO $db){
         $this->db = $db;
+        $this->personMan  = new PersonManager($db);
     }
 
     public function addMessage($senderId, $recipientId, $text){
@@ -17,9 +20,10 @@ class MessageManager{
         
     }
 
-    public function getChatIds($id){
+    public function getChats($id){
 
         $ids = array();
+        $data = array();
 
         $chatsRecieved = "SELECT DISTINCT recipientId WHERE senderId = :senderId";
         $chatsSent     = "SELECT DISTINCT senderId WHERE recipientId = :recipientId";
@@ -33,8 +37,23 @@ class MessageManager{
         $statement->execute([':recipientId'=>$id]);
 
         $ids[]=$statement->fetchAll();
+        $uniqueIds = array_unique($ids);
+        
 
-        return $ids;
+        foreach($uniqueIds as $id){
+
+            $dataTemp = array();
+
+            $person = $this->personMan->getPersonData($id);
+
+            $dataTemp['id']=$id;
+            $dataTemp['name']=$person['name'];
+            $dataTemp['lastname']=$person['lastName'];
+            
+            $data[]=$dataTemp;
+        }
+
+        return $data;
     }
 
     public function getChat($person1,$person2){

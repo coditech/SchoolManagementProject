@@ -300,6 +300,26 @@ class Router
 
                     } else if($path[3]=="messages"){
 
+                        //THE ID SHOULD BE TAKEN FROM THE SESSION AFTER TESTING
+                        if($path[4]=="chats"){
+
+                            $id = $_GET['id'];
+
+                            $data = $this->messsageMan->getChats($id);
+
+                            $jsonArray['data']=$data;
+
+                        } else if($path[4]=="conversation"){
+
+                            //THE PARENTID SHOULD BE TAKEN FROM THE SESSION AFTER TESTING
+                            $parent = $_GET['parentId'];
+                            $teacher = $_GET['teacherId'];
+
+                            $data = $this->messsageMan->getChat($parent,$teacher);
+
+                            $jsonArray['data']=$data;
+
+                        }
                     }
 
 
@@ -315,6 +335,29 @@ class Router
                         $jsonArray['data']=$data;
 
                     } else if($path[3]=="messages"){
+
+                            //THE ID SHOULD BE TAKEN FROM THE SESSION AFTER TESTING
+
+                        if($path[4]=="chats"){
+
+                            $id = $_GET['id'];
+
+                            $data = $this->messsageMan->getChats($id);
+
+                            $jsonArray['data']=$data;
+
+                        } else if($path[4]=="conversation"){
+
+                            //THE TEACHERID SHOULD BE TAKEN FROM THE SESSION AFTER TESTING
+                            $parent = $_GET['parentId'];
+                            $teacher = $_GET['teacherId'];
+
+                            $data = $this->messsageMan->getChat($teacher,$parent);
+
+                            $jsonArray['data']=$data;
+
+                        }
+
 
                     }
 
