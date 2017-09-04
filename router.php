@@ -204,11 +204,6 @@ class Router
                         $jsonArray['data']=$data;
 
 
-                    } else if($path[3]=="messages"){
-
-                    }
-
-
                 } else if($path[2]=="teacher"){
 
                     if($path[3]=="students"){
@@ -220,10 +215,7 @@ class Router
 
                         $jsonArray['data']=$data;
 
-
-                    } else if($path[3]=="messages"){
-
-                    }
+                    } 
 
                 } else if($path[2]=="login"){
 
@@ -264,6 +256,7 @@ class Router
         
         //
         
+    }
     }
 }
 ?> 
