@@ -74,8 +74,11 @@ class Router
             
             else if ($path[1] == "articles") {
 
+                
+
                 if ($path[2] == "add") {
 
+                    if($_SESSION['userType']=="admin"){
                     $title = $_POST['title'];
                     $text  = $_POST['text'];
                     $files = $_FILES['files'];
@@ -83,9 +86,11 @@ class Router
                     $success              = $this->articleMan->successAddArticle($title, $text, $files);
                     $error                = $this->articleMan->getErrorAddArticle($title, $text, $files);
                     $jsonArray['success'] = $success;
-                    $jsonArray['error']   = $error;
+                    $jsonArray['error']   = $error;}
 
                 } else if ($path[2] == "edit") {
+
+                    if($_SESSION['userType']=="admin"){
 
                     $id    = $_POST['id'];
                     $title = $_POST['title'];
@@ -94,11 +99,12 @@ class Router
                     $success              = $this->articleMan->successEditArticle($title, $text);
                     $error                = $this->articleMan->getErrorEditArticle($title, $text);
                     $jsonArray['success'] = $success;
-                    $jsonArray['error']   = $error;
+                    $jsonArray['error']   = $error;}
 
                 } else if ($path[2] == "delete") {
+                    if($_SESSION['userType']=="admin"){
                     $id = $_POST['id'];
-                    $this->articleMan->deleteArticle($id);
+                    $this->articleMan->deleteArticle($id);}
                 } else {
                     $id                    = $_GET["id"];
                     $success               = $this->articleMan->successArticle($id);
@@ -114,7 +120,7 @@ class Router
                 }
                               
             } else if($path[1]=="course"){
-
+                if($_SESSION['userType']=="admin"){
                 if($path[2]=="add"){
                     
                     $courseCode = $_POST['courseCode'];
@@ -154,11 +160,11 @@ class Router
                     $data = $this->courseMan->search($id,$courseCode, $courseName, $courseMaxGrade, $courseYear, $courseClass, $teacherId);
 
                     $jsonArray['data']=$data;
-                }
+                }}
 
 
             } else if($path[1]=="grade"){
-
+                if($_SESSION['userType']=="admin"){
                 if($path[2]=="add"){
 
                     $score = $_POST['score'];
@@ -195,12 +201,12 @@ class Router
                     $data = $this->gradeMan->search($score,$semester,$year,$courseId,$studentId);
 
                     $jsonArray['data'] = $data;
-                }
+                }}
 
             } else if ($path[1] == "person") {
                 
                 if ($path[2] == "add") {
-                    
+                    if($_SESSION['userType']=="admin"){
                     $id        = $_POST['id'];
                     $name      = $_POST['name'];
                     $lastName  = $_POST['lastName'];
@@ -212,9 +218,9 @@ class Router
                     $password  = $_POST['password'];
                     
                     $this->personMan->addPerson($id, $name, $lastName, $gender, $email, $telephone, $userType, $username, $password);
-                    
+                    }
                 } else if ($path[2] == "edit") {
-                    
+                    if($_SESSION['userType']=="admin"){
                     $id        = $_POST['id'];
                     $name      = $_POST['name'];
                     $lastName  = $_POST['lastName'];
@@ -226,15 +232,15 @@ class Router
                     $password  = $_POST['password'];
                     
                     $this->personMan->editPerson($id, $name, $lastName, $gender, $email, $telephone, $userType, $username, $password);
-                    
+                    }
                 } else if ($path[2] == "delete") {
-                    
+                    if($_SESSION['userType']=="admin"){
                     $id = $_POST['id'];
                     
                     $this->personMan->deletePerson($id);
-                    
+                    }
                 } else if($path[2] == "info"){
-
+                    if($_SESSION['userType']=="admin"){
                     if($path[3]=="id"){
 
                         $id        = $_POST['id'];
@@ -262,27 +268,26 @@ class Router
                         $data=$this->personMan->search($id,$name, $lastName, $gender, $email, $telephone, $userType,$username);
                         $jsonArray['data']     = $data;
 
-                    }
+                    }}
                     
 
                 } else if($path[2]=="student"){
-
+                    if($_SESSION['userType']=="student"){
                     if($path[3]=="grades"){
 
-                    //THE ID SHOULD BE TAKEN FROM THE SESSION AFTER TESTING
-                    $id=$_GET['id'];
+                    
+                    $id=$_SESSION['id'];
 
                     $data = $this->gradeMan->getStudentGrades($id);
 
                     $jsonArray['data']=$data;
-                    }
+                    }}
 
                 } else if($path[2]=="parent"){
-
+                    if($_SESSION['userType']=="parent"){
                     if($path[3]=="children"){
 
-                        //THE ID SHOULD BE TAKEN FROM THE SESSION AFTER TESTING
-                        $id = $_GET['id'];
+                        $id = $_SESSION['id'];
 
                         $data = $this->personMan->getChildren($id);
 
@@ -290,8 +295,7 @@ class Router
 
                     } else if($path[3]=="teachers"){
 
-                        //THE ID SHOULD BE TAKEN FROM THE SESSION AFTER TESTING
-                        $id = $_GET['id'];
+                        $id = $_SESSION['id'];
 
                         $data = $this->personMan->getTeachers($id);
 
@@ -300,10 +304,9 @@ class Router
 
                     } else if($path[3]=="messages"){
 
-                        //THE ID SHOULD BE TAKEN FROM THE SESSION AFTER TESTING
                         if($path[4]=="chats"){
 
-                            $id = $_GET['id'];
+                            $id = $_SESSION['id'];
 
                             $data = $this->messsageMan->getChats($id);
 
@@ -311,8 +314,7 @@ class Router
 
                         } else if($path[4]=="conversation"){
 
-                            //THE PARENTID SHOULD BE TAKEN FROM THE SESSION AFTER TESTING
-                            $parent = $_GET['parentId'];
+                            $parent = $_SESSION['id'];
                             $teacher = $_GET['teacherId'];
 
                             $data = $this->messsageMan->getChat($parent,$teacher);
@@ -320,15 +322,14 @@ class Router
                             $jsonArray['data']=$data;
 
                         }
-                    }
+                    }}
 
 
                 } else if($path[2]=="teacher"){
-
+                    if($_SESSION['userType']=="teacher"){
                     if($path[3]=="students"){
 
-                        //THE ID SHOULD BE TAKEN FROM THE SESSION AFTER TESTING
-                        $id=$_GET['id'];
+                        $id=$_SESSION['id'];
 
                         $data = $this->personMan->getStudents($id);
 
@@ -336,11 +337,11 @@ class Router
 
                     } else if($path[3]=="messages"){
 
-                            //THE ID SHOULD BE TAKEN FROM THE SESSION AFTER TESTING
+                            
 
                         if($path[4]=="chats"){
 
-                            $id = $_GET['id'];
+                            $id = $_SESSION['id'];
 
                             $data = $this->messsageMan->getChats($id);
 
@@ -348,9 +349,9 @@ class Router
 
                         } else if($path[4]=="conversation"){
 
-                            //THE TEACHERID SHOULD BE TAKEN FROM THE SESSION AFTER TESTING
+                            
                             $parent = $_GET['parentId'];
-                            $teacher = $_GET['teacherId'];
+                            $teacher = $_SESSION['id'];
 
                             $data = $this->messsageMan->getChat($teacher,$parent);
 
@@ -359,7 +360,7 @@ class Router
                         }
 
 
-                    }
+                    }}
 
                 } else if($path[2]=="login"){
 
