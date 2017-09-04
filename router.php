@@ -265,7 +265,7 @@ class Router
                     }
                     
 
-                }else if($path[2]=="student"){
+                } else if($path[2]=="student"){
 
                     if($path[3]=="grades"){
 
@@ -300,8 +300,9 @@ class Router
 
                     } else if($path[3]=="messages"){
 
+                    }
 
-                     
+
                 } else if($path[2]=="teacher"){
 
                     if($path[3]=="students"){
@@ -313,7 +314,7 @@ class Router
 
                         $jsonArray['data']=$data;
 
-                    }else if($path[3]=="messages"){
+                    } else if($path[3]=="messages"){
 
                     }
 
@@ -332,7 +333,7 @@ class Router
 
                     $this->personMan->lougout();
 
-                } 
+                }
                 
             }
             
@@ -356,7 +357,7 @@ class Router
         
         //
         
-    }
+     
     }
 }
 ?> 
