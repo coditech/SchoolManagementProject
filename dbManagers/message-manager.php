@@ -31,14 +31,21 @@ class MessageManager{
         $statement = $this->db->prepare($chatsRecieved);
         $statement->execute([':senderId'=>$id]);
         
-        $ids[]=$statement->fetchAll();
+        $ids = $statement->fetchAll();
+
 
         $statement = $this->db->prepare($chatsSent);
         $statement->execute([':recipientId'=>$id]);
 
-        $ids[]=$statement->fetchAll();
-        $uniqueIds = array_unique($ids);
+        $ids2 = $statement->fetchAll();
         
+        $extract = function($v){ return $v[0];};
+
+        $ids = array_merge($ids,$ids2);
+        $ids = array_map($extract,$ids);
+    
+
+        $uniqueIds = array_unique($ids);
 
         foreach($uniqueIds as $id){
 
@@ -58,7 +65,7 @@ class MessageManager{
 
     public function getChat($person1,$person2){
 
-        $chat = "SELECT text FROM message WHERE senderId = :senderId1 AND recipientId = :recipientId1
+        $chat = "SELECT senderId, text FROM message WHERE senderId = :senderId1 AND recipientId = :recipientId1
                                             OR  senderId = :senderId2 AND recipientId = :recipientId2
                                             ORDER BY date ASC";
         $statement = $this->db->prepare($chat);  
