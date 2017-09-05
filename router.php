@@ -375,7 +375,7 @@ class Router
 
                 } else if($path[2]=="logout"){
 
-                    $this->personMan->lougout();
+                    $this->personMan->logout();
 
                 }
                 

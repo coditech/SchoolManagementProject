@@ -102,7 +102,7 @@ class PersonManager
         $statement = $this->db->prepare($person);
         $statement->execute([':username'=>$username,':password'=>$password]);
 
-        $personData = $statement->fetchAll();
+        $personData = $statement->fetchAll()[0];
 
         if(empty($personData)){
             return 'false';
@@ -155,7 +155,7 @@ class PersonManager
 
     public function getErrorLogin($username,$password){
 
-        if($this->loginUser($username,$password)=="false"){
+        if($this->login($username,$password)=="false"){
             return "Incorrect Username Or Password";
         }else return "All Good No Errors";
 
