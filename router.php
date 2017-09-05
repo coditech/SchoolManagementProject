@@ -308,16 +308,16 @@ class Router
 
                             $id = $_SESSION['id'];
 
-                            $data = $this->messsageMan->getChats($id);
+                            $data = $this->messageMan->getChats($id);
 
                             $jsonArray['data']=$data;
 
                         } else if($path[4]=="conversation"){
 
                             $parent = $_SESSION['id'];
-                            $teacher = $_GET['teacherId'];
+                            $teacher = $_POST['teacherId'];
 
-                            $data = $this->messsageMan->getChat($parent,$teacher);
+                            $data = $this->messageMan->getChat($parent,$teacher);
 
                             $jsonArray['data']=$data;
 
@@ -343,17 +343,17 @@ class Router
 
                             $id = $_SESSION['id'];
 
-                            $data = $this->messsageMan->getChats($id);
+                            $data = $this->messageMan->getChats($id);
 
                             $jsonArray['data']=$data;
 
                         } else if($path[4]=="conversation"){
 
                             
-                            $parent = $_GET['parentId'];
+                            $parent = $_POST['parentId'];
                             $teacher = $_SESSION['id'];
 
-                            $data = $this->messsageMan->getChat($teacher,$parent);
+                            $data = $this->messageMan->getChat($teacher,$parent);
 
                             $jsonArray['data']=$data;
 

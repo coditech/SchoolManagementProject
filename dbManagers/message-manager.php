@@ -25,8 +25,8 @@ class MessageManager{
         $ids = array();
         $data = array();
 
-        $chatsRecieved = "SELECT DISTINCT recipientId WHERE senderId = :senderId";
-        $chatsSent     = "SELECT DISTINCT senderId WHERE recipientId = :recipientId";
+        $chatsRecieved = "SELECT DISTINCT recipientId FROM message WHERE senderId = :senderId";
+        $chatsSent     = "SELECT DISTINCT senderId FROM message WHERE recipientId = :recipientId";
 
         $statement = $this->db->prepare($chatsRecieved);
         $statement->execute([':senderId'=>$id]);
@@ -62,7 +62,7 @@ class MessageManager{
                                             OR  senderId = :senderId2 AND recipientId = :recipientId2
                                             ORDER BY date ASC";
         $statement = $this->db->prepare($chat);  
-        $statement->execute([':senderId1'=>$person1,':senderId2'=>$person2,':recipientId1'=>$person2,':recipientId2'=>$person2]);
+        $statement->execute([':senderId1'=>$person1,':senderId2'=>$person2,':recipientId1'=>$person2,':recipientId2'=>$person1]);
 
         return $statement->fetchAll();                                  
 
