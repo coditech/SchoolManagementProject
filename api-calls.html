@@ -1,0 +1,67 @@
+﻿<!doctype html><html><head><meta charset="utf-8"><style>
+      /* Separated from document_view.css to enable use in downloadable
+   export files. #cutAndCopyBucket is included for every rule because
+   we wwant cut/copied items to be formatted the same way as they
+   would be when exported. */
+
+.formattedExport,
+#cutAndCopyBucket {
+    font-family: 'Helvetica Neue', Arial, Sans-serif;
+    color: #333;
+    font-size: 13px;
+    line-height: 17px;
+    /* used to set white-space: pre-wrap here, but that messes up GMail's
+       formatting of the export output, so moving that to the name and
+       notes separately. */
+}
+
+.formattedExport .name, .formattedExport .note,
+#cutAndCopyBucket .name, #cutAndCopyBucket .note {
+    white-space: pre-wrap;
+}
+
+.formattedExport ul,
+#cutAndCopyBucket ul{
+    list-style: disc;
+    /* Needed to reset browser defaults. */
+    margin: 0;
+    padding: 0;
+}
+
+.formattedExport li,
+#cutAndCopyBucket li {
+    margin: 4px 0 4px 20px;
+    /* Needed to reset browser defaults. */
+    padding: 0;
+}
+
+.formattedExport > .name,
+#cutAndCopyBucket > .name {
+    font-size: 16px;
+    line-height: 21px;
+}
+
+.formattedExport > .note,
+#cutAndCopyBucket > .note {
+    font-size: 13px;
+    line-height: 17px;
+}
+
+.formattedExport > ul,
+#cutAndCopyBucket > ul {
+    margin-top: 15px;
+}
+
+.formattedExport .name.done,
+#cutAndCopyBucket .name.done {
+    text-decoration:line-through;
+    color:#999;
+}
+
+.formattedExport .note,
+#cutAndCopyBucket .note {
+    font-size: 12px;
+    color:#666;
+}
+
+      </style></head><body class="formattedExport"><ul><li><span class="name">Home Page</span><ul><li><span class="name">/api/home</span><ul><li><span class="name">GET: page</span></li><li><span class="name">GET: limit</span></li></ul></li></ul></li><li><span class="name">Articles</span><ul><li><span class="name">Info</span><ul><li><span class="name">/api/articles</span><ul><li><span class="name">GET: id</span></li></ul></li></ul></li><li><span class="name">Get All Articles</span><ul><li><span class="name">/api/home?page=1&amp;limit=99999</span></li></ul></li><li><span class="name">Add</span><ul><li><span class="name">/api/articles/add</span><ul><li><span class="name">POST: title</span></li><li><span class="name">POST: text</span></li><li><span class="name">FILES: files</span></li></ul></li></ul></li><li><span class="name">Edit</span><ul><li><span class="name">/api/articles/edit</span><ul><li><span class="name">POST: id</span></li><li><span class="name">POST: title</span></li><li><span class="name">POST: text</span></li></ul></li></ul></li><li><span class="name">Delete</span><ul><li><span class="name">/api/articles/delete</span><ul><li><span class="name">POST: id</span></li></ul></li></ul></li></ul></li><li><span class="name">Course</span><ul><li><span class="name">Add</span><ul><li><span class="name">/api/course/add</span><ul><li><span class="name">POST: courseCode</span></li><li><span class="name">POST: courseName</span></li><li><span class="name">POST: courseMaxGrade</span></li><li><span class="name">POST: courseYear</span></li><li><span class="name">POST: courseClass</span></li><li><span class="name">POST: teacherId</span></li></ul></li></ul></li><li><span class="name">Edit</span><ul><li><span class="name">/api/course/edit</span><ul><li><span class="name">POST: id</span></li><li><span class="name">POST: courseCode</span></li><li><span class="name">POST: courseName</span></li><li><span class="name">POST: courseMaxGrade</span></li><li><span class="name">POST: courseYear</span></li><li><span class="name">POST: courseClass</span></li><li><span class="name">POST: teacherId</span></li></ul></li></ul></li><li><span class="name">Delete</span><ul><li><span class="name">/api/course/delete</span><ul><li><span class="name">POST: id</span></li></ul></li></ul></li><li><span class="name">Search (ALL EMPTY FIELDS WILL RETURN ALL DATA)</span><ul><li><span class="name">/api/course/search</span><ul><li><span class="name">POST: id</span></li><li><span class="name">POST: courseCode</span></li><li><span class="name">POST: courseName</span></li><li><span class="name">POST: courseMaxGrade</span></li><li><span class="name">POST: courseYear</span></li><li><span class="name">POST: courseClass</span></li><li><span class="name">POST: teacherId</span></li></ul></li></ul></li></ul></li><li><span class="name">Grade</span><ul><li><span class="name">Add</span><ul><li><span class="name">/api/grade/add</span><ul><li><span class="name">POST: score</span></li><li><span class="name">POST: semester</span></li><li><span class="name">POST: year</span></li><li><span class="name">POST: courseId</span></li><li><span class="name">POST: studentId</span></li></ul></li></ul></li><li><span class="name">Edit</span><ul><li><span class="name">/api/grade/edit</span><ul><li><span class="name">POST: id</span></li><li><span class="name">POST: score</span></li><li><span class="name">POST: semester</span></li><li><span class="name">POST: year</span></li><li><span class="name">POST: courseId</span></li><li><span class="name">POST: studentId</span></li></ul></li></ul></li><li><span class="name">Delete</span><ul><li><span class="name">/api/grade/delete</span><ul><li><span class="name">POST: id</span></li></ul></li></ul></li><li><span class="name">Search (ALL EMPTY FIELDS WILL RETURN ALL DATA)</span><ul><li><span class="name">/api/grade/search</span><ul><li><span class="name">POST: score</span></li><li><span class="name">POST: semester</span></li><li><span class="name">POST: year</span></li><li><span class="name">POST: courseId</span></li><li><span class="name">POST: studentId</span></li></ul></li></ul></li></ul></li><li><span class="name">Person</span><ul><li><span class="name">Login</span><ul><li><span class="name">/api/person/login</span><ul><li><span class="name">POST: username</span></li><li><span class="name">POST: password</span></li></ul></li></ul></li><li><span class="name">Logout</span><ul><li><span class="name">/api/person/logout</span></li></ul></li><li><span class="name">Add</span><ul><li><span class="name">/api/person/add</span><ul><li><span class="name">POST: id</span></li><li><span class="name">POST: name</span></li><li><span class="name">POST: lastName</span></li><li><span class="name">POST: gender</span></li><li><span class="name">POST: email</span></li><li><span class="name">POST: telephone</span></li><li><span class="name">POST: userType</span></li><li><span class="name">POST: username</span></li><li><span class="name">POST: password</span></li></ul></li></ul></li><li><span class="name">Edit</span><ul><li><span class="name">/api/person/edit</span><ul><li><span class="name">POST: id</span></li><li><span class="name">POST: name</span></li><li><span class="name">POST: lastName</span></li><li><span class="name">POST: gender</span></li><li><span class="name">POST: email</span></li><li><span class="name">POST: telephone</span></li><li><span class="name">POST: userType</span></li><li><span class="name">POST: username</span></li><li><span class="name">POST: password</span></li></ul></li></ul></li><li><span class="name">Delete</span><ul><li><span class="name">/api/person/delete</span><ul><li><span class="name">POST: id</span></li></ul></li></ul></li><li><span class="name">Info</span><ul><li><span class="name">/api/person/info/id</span><ul><li><span class="name">POST: id</span></li></ul></li></ul></li><li><span class="name">Search</span><ul><li><span class="name">/api/person/info/search</span><ul><li><span class="name">POST: id</span></li><li><span class="name">POST: name</span></li><li><span class="name">POST: lastName</span></li><li><span class="name">POST: gender</span></li><li><span class="name">POST: email</span></li><li><span class="name">POST: telephone</span></li><li><span class="name">POST: userType</span></li><li><span class="name">POST: username</span></li></ul></li></ul></li></ul></li><li><span class="name">Student (Needs To Login)</span><ul><li><span class="name">Grades</span><ul><li><span class="name">/api/person/student/grades</span><ul><li><span class="name">SESSION: id</span></li></ul></li></ul></li></ul></li><li><span class="name">Parent (Needs To Login)</span><ul><li><span class="name">Children</span><ul><li><span class="name">/api/person/parent/children</span><ul><li><span class="name">SESSION: id</span></li></ul></li></ul></li><li><span class="name">Teachers</span><ul><li><span class="name">/api/person/parent/teachers</span><ul><li><span class="name">SESSION: id</span></li></ul></li></ul></li><li><span class="name">Messages</span><ul><li><span class="name">Get All Chats (Not The Actual Messages)</span><ul><li><span class="name">/api/person/parent/messages/chats</span><ul><li><span class="name">SESSION: id</span></li></ul></li></ul></li><li><span class="name">Get One Conversation</span><ul><li><span class="name">/api/person/parent/messages/conversation</span><ul><li><span class="name">SESSION: id</span></li><li><span class="name">POST: teacherId</span></li></ul></li></ul></li></ul></li></ul></li><li><span class="name">Teachers (Needs To Login)</span><ul><li><span class="name">Students</span><ul><li><span class="name">/api/person/teacher/students</span><ul><li><span class="name">SESSION: id</span></li></ul></li></ul></li><li><span class="name">Messages</span><ul><li><span class="name">Get All Chats (Not The Actual Messages)</span><ul><li><span class="name">/api/person/teacher/messages/chats</span><ul><li><span class="name">SESSION: id</span></li></ul></li></ul></li><li><span class="name">Get One Conversation</span><ul><li><span class="name">/api/person/parent/messages/conversation</span><ul><li><span class="name">SESSION: id</span></li><li><span class="name">POST: parentId</span></li></ul></li></ul></li></ul></li></ul></li></ul></body></html>
