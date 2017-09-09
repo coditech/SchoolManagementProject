@@ -105,12 +105,12 @@ class PersonManager
         $personData = $statement->fetchAll()[0];
 
         if(empty($personData)){
-            return 'false';
+            return false;
         } else{
             $_SESSION['id']=$personData['id'];
             $_SESSION['username']=$personData['username'];
             $_SESSION['userType']=$personData['userType'];
-            return 'true';
+            return true;
         }
         
     }
@@ -129,7 +129,7 @@ class PersonManager
 
     
     public function getErrorPersonId($id){
-        if($this->personIdExists($id)=="false"){
+        if($this->personIdExists($id)==false){
             return "Invalid Id or Id does not exist";
         } else {
             return "All Good No Errors";
@@ -137,7 +137,7 @@ class PersonManager
     }
 
     public function getErrorType($usertype){
-        if($this->typeExists($usertype)=="false"){
+        if($this->typeExists($usertype)==false){
             return "Invalid Type or Type does not exist";
         } else {
             return "All Good No Errors";
@@ -147,7 +147,7 @@ class PersonManager
     public function getErrorName($name,$lastName){
         if (empty($name) && empty($lastName)){
             return "You Need To Input At Least A First Name or A Last Name";
-        }else if($this->nameExists($name, $lastName)=="false") {
+        }else if($this->nameExists($name, $lastName)==false) {
             return "Name Does Not Exist";
         }
         else return "All Good No Errors";
@@ -155,7 +155,7 @@ class PersonManager
 
     public function getErrorLogin($username,$password){
 
-        if($this->login($username,$password)=="false"){
+        if($this->login($username,$password)==false){
             return "Incorrect Username Or Password";
         }else return "All Good No Errors";
 

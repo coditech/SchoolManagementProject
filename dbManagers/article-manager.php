@@ -14,7 +14,7 @@ class ArticleManager
 
     public function addArticle($title, $text, $files)
     {
-        if ($this->successAddArticle($title, $text, $files) == "true") {
+        if ($this->successAddArticle($title, $text, $files) == true) {
 
             $date = date("Y/m/d");
             $insert = "INSERT INTO article (title,text,date) VALUES (:title,:text,:date)";
@@ -49,7 +49,7 @@ class ArticleManager
 
     public function editArticle($id, $title, $text)
     {
-        if ($this->successEditArticle($title, $text) == "true") {
+        if ($this->successEditArticle($title, $text) == true) {
             $update = "UPDATE article SET title=:title, text=:text WHERE id=:id";
             $statement = $this->db->prepare($update);
             $statement->execute([':id' => $id, ':title' => $title, ':text' => $text]
@@ -93,7 +93,7 @@ class ArticleManager
             break;
         }
 
-        return $_SERVER['HTTP_HOST'] . '/'. $imagePath;
+        return '//' . $_SERVER['HTTP_HOST'] . '/' . $imagePath;
     }
 
     function getPageData($page, $limit)
@@ -201,8 +201,8 @@ class ArticleManager
         $statement->execute([':id' => $id]);
         $next = $statement->fetchAll()[0][0];
 
-        if ($this->successArticle($id) == "true") {
-            if ($this->successArticle($next) == "true") {
+        if ($this->successArticle($id) == true) {
+            if ($this->successArticle($next) == true) {
                 return $this->getArticleData($next);
             } else {
                 return array();
@@ -228,8 +228,8 @@ class ArticleManager
 
         }
         if (!empty($prev)) {
-            if ($this->successArticle($id) == "true") {
-                if ($this->successArticle($prev) == "true") {
+            if ($this->successArticle($id) == true) {
+                if ($this->successArticle($prev) == true) {
                     return $this->getArticleData($prev);
                 } else {
                     return array();
@@ -255,7 +255,7 @@ class ArticleManager
 
     function getErrorPage($page, $limit)
     {
-        if ($this->successPage($page, $limit) == "false") {
+        if ($this->successPage($page, $limit) == false) {
             $error = "This Page is Out Of Range";
         } else {
             $error = "All Good No Errors";
@@ -265,7 +265,7 @@ class ArticleManager
 
     function getErrorArticle($id)
     {
-        if ($this->successArticle($id) == "false") {
+        if ($this->successArticle($id) == false) {
             $error = "This Article Id Does Not Exist";
         } else {
             $error = "All Good No Errors";
