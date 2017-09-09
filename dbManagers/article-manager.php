@@ -5,45 +5,40 @@ require_once("./dbManagers/image-manager.php");
 class ArticleManager
 {
     public $db;
-    
+
     public function __construct(PDO $db)
     {
         $this->db = $db;
         $this->imageMan = new ImageManager($db);
     }
 
-    public function addArticle($title, $text,$files)
+    public function addArticle($title, $text, $files)
     {
-	if ($this->successAddArticle($title, $text, $files) == "true")
-		{
+        if ($this->successAddArticle($title, $text, $files) == "true") {
 
-		$date = date("Y/m/d");
-		$insert = "INSERT INTO article (title,text,date) VALUES (:title,:text,:date)";
-		$statement = $this->db->prepare($insert);
-		$statement->execute([':title' => $title, ':text' => $text,':date'=>$date]);
-        
-		$id = $this->db->lastInsertId();
-        
-		foreach($_FILES["files"]["tmp_name"] as $key => $tmp_name)
-			{
-			$file_name = $_FILES["files"]["name"][$key];
-			$file_tmp = $_FILES["files"]["tmp_name"][$key];
-            $ext=pathinfo($file_name,PATHINFO_EXTENSION);
-			if (!file_exists("images/" . $file_name))
-				{
-				move_uploaded_file($file_tmp = $_FILES["files"]["tmp_name"][$key], "images/" . $file_name);
-				$this->imageMan->addImage("images/" . $file_name, $id);
-				}
-			  else
-				{
-				$filename = basename($file_name, $ext);
-				$newFileName = $filename . time() . "." . $ext;
-				move_uploaded_file($file_tmp = $_FILES["files"]["tmp_name"][$key], "images/" . $newFileName);
-				$this->imageMan->addImage("images/" . $newFileName, $id);
-				}
-			}
-		}
-	}
+            $date = date("Y/m/d");
+            $insert = "INSERT INTO article (title,text,date) VALUES (:title,:text,:date)";
+            $statement = $this->db->prepare($insert);
+            $statement->execute([':title' => $title, ':text' => $text, ':date' => $date]);
+
+            $id = $this->db->lastInsertId();
+
+            foreach ($_FILES["files"]["tmp_name"] as $key => $tmp_name) {
+                $file_name = $_FILES["files"]["name"][$key];
+                $file_tmp = $_FILES["files"]["tmp_name"][$key];
+                $ext = pathinfo($file_name, PATHINFO_EXTENSION);
+                if (!file_exists("images/" . $file_name)) {
+                    move_uploaded_file($file_tmp = $_FILES["files"]["tmp_name"][$key], "images/" . $file_name);
+                    $this->imageMan->addImage("images/" . $file_name, $id);
+                } else {
+                    $filename = basename($file_name, $ext);
+                    $newFileName = $filename . time() . "." . $ext;
+                    move_uploaded_file($file_tmp = $_FILES["files"]["tmp_name"][$key], "images/" . $newFileName);
+                    $this->imageMan->addImage("images/" . $newFileName, $id);
+                }
+            }
+        }
+    }
 
     public function deleteArticle($id)
     {
@@ -54,11 +49,12 @@ class ArticleManager
 
     public function editArticle($id, $title, $text)
     {
-        if($this->successEditArticle($title, $text)=="true"){
-        $update = "UPDATE article SET title=:title, text=:text WHERE id=:id";
-        $statement = $this->db->prepare($update);
-        $statement->execute([':id' => $id, ':title' => $title, ':text' => $text]
-        );}
+        if ($this->successEditArticle($title, $text) == "true") {
+            $update = "UPDATE article SET title=:title, text=:text WHERE id=:id";
+            $statement = $this->db->prepare($update);
+            $statement->execute([':id' => $id, ':title' => $title, ':text' => $text]
+            );
+        }
     }
 
     public function getArticleData($id)
@@ -91,11 +87,13 @@ class ArticleManager
         $statement = $this->db->prepare($getImage);
         $statement->execute([':articleId' => $articleId]
         );
+        $imagePath = '';
         foreach ($statement as $image) {
             $imagePath = $image['pathToImg'];
             break;
         }
-        return $imagePath;
+
+        return $_SERVER['HTTP_HOST'] . $imagePath;
     }
 
     function getPageData($page, $limit)
@@ -144,19 +142,19 @@ class ArticleManager
         else return true;
     }
 
-    function successAddArticle($title,$text,$files)
+    function successAddArticle($title, $text, $files)
     {
-        $extensions=array("jpeg","jpg","png");
+        $extensions = array("jpeg", "jpg", "png");
 
-        if(empty($title))return false;
-        if(empty($text))return false;
-        if(empty($files))return false;
-        
-        
-        foreach($files["name"] as $file){
+        if (empty($title)) return false;
+        if (empty($text)) return false;
+        if (empty($files)) return false;
 
-           $ext =  pathinfo($file)['extension'];
-           if(!in_array($ext,$extensions))return false;
+
+        foreach ($files["name"] as $file) {
+
+            $ext = pathinfo($file)['extension'];
+            if (!in_array($ext, $extensions)) return false;
 
         }
 
@@ -164,9 +162,10 @@ class ArticleManager
 
     }
 
-    function successEditArticle($title,$text){
-        if(empty($title))return false;
-        if(empty($text))return false;
+    function successEditArticle($title, $text)
+    {
+        if (empty($title)) return false;
+        if (empty($text)) return false;
 
         return true;
     }
@@ -274,35 +273,36 @@ class ArticleManager
         return $error;
     }
 
-    function getErrorAddArticle($title,$text,$files){
+    function getErrorAddArticle($title, $text, $files)
+    {
 
-        $error=array();
+        $error = array();
 
-        $extensions=array("jpeg","jpg","png");
+        $extensions = array("jpeg", "jpg", "png");
 
-        if(empty($title)) $error["title"]="Title Can't Be Empty";
-        if(empty($text)) $error["text"]="Text Can't Be Empty";
-        if(empty($files)) $error["files"]="You Need To Upload At Least One Image";
-        
-        
-        foreach($files["name"] as $file){
+        if (empty($title)) $error["title"] = "Title Can't Be Empty";
+        if (empty($text)) $error["text"] = "Text Can't Be Empty";
+        if (empty($files)) $error["files"] = "You Need To Upload At Least One Image";
 
-           $ext =  pathinfo($file)['extension'];
-           if(!in_array($ext,$extensions)) $error["files"]="One Of Your Files Has An Extension Other Than jpeg, jpg, png";
+
+        foreach ($files["name"] as $file) {
+
+            $ext = pathinfo($file)['extension'];
+            if (!in_array($ext, $extensions)) $error["files"] = "One Of Your Files Has An Extension Other Than jpeg, jpg, png";
         }
 
         return $error;
     }
 
-    function getErrorEditArticle($title,$text){
-        $error=array();
+    function getErrorEditArticle($title, $text)
+    {
+        $error = array();
 
-        if(empty($title)) $error["title"]="Title Can't Be Empty";
-        if(empty($text)) $error["text"]="Text Can't Be Empty";
+        if (empty($title)) $error["title"] = "Title Can't Be Empty";
+        if (empty($text)) $error["text"] = "Text Can't Be Empty";
 
         return $error;
     }
-
 
 
 }
