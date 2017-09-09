@@ -133,42 +133,42 @@ class ArticleManager
     {
         $statement = $this->getArticlesPage($page, $limit);
         $success = $statement->fetchAll();
-        if (empty($success)) return "false";
-        else return "true";
+        if (empty($success)) return false;
+        else return true;
     }
 
     function successArticle($id)
     {
         $success = $this->getArticleData($id);
-        if (empty($success)) return "false";
-        else return "true";
+        if (empty($success)) return false;
+        else return true;
     }
 
     function successAddArticle($title,$text,$files)
     {
         $extensions=array("jpeg","jpg","png");
 
-        if(empty($title))return "false";
-        if(empty($text))return "false";
-        if(empty($files))return "false";
+        if(empty($title))return false;
+        if(empty($text))return false;
+        if(empty($files))return false;
         
         
         foreach($files["name"] as $file){
 
            $ext =  pathinfo($file)['extension'];
-           if(!in_array($ext,$extensions))return "false";
+           if(!in_array($ext,$extensions))return false;
 
         }
 
-        return "true";
+        return true;
 
     }
 
     function successEditArticle($title,$text){
-        if(empty($title))return "false";
-        if(empty($text))return "false";
+        if(empty($title))return false;
+        if(empty($text))return false;
 
-        return "true";
+        return true;
     }
 
     function previousPages($page, $limit)

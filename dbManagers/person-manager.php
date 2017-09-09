@@ -122,8 +122,8 @@ class PersonManager
     public function personIdExists($id){
 
         $success=$this->getPersonData($id);
-        if (empty($success)) return "false";
-        else return "true";
+        if (empty($success)) return false;
+        else return true;
 
     }
 
