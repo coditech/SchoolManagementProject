@@ -93,7 +93,7 @@ class ArticleManager
             break;
         }
 
-        return $_SERVER['HTTP_HOST'] . $imagePath;
+        return $_SERVER['HTTP_HOST'] . '/'. $imagePath;
     }
 
     function getPageData($page, $limit)
