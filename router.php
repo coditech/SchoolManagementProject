@@ -46,10 +46,7 @@ class Router
 
         if ($path[0] == 'api') {
 
-            if ($path[1] = 'test') {
-               $this->personMan->editPerson(14,null,null,null, null, null, null,'guibs', 'guibs');
-
-            } else if ($path[1] == "home") {
+            if ($path[1] == "home") {
                 if (isset($_GET["page"])) {
                     $page = $_GET["page"];
                     if ($page < 1) {
@@ -244,14 +241,13 @@ class Router
                         $id = $_POST['id'];
                         $user = $this->personMan->getPersonData($id);
 
-                        if($user!= null){
+                        if ($user != null) {
                             $this->personMan->deletePerson($id);
-                            $jsonArray['success']= true;
 
 
-                        }else {
-                            $jsonArray['success']= false;
-                            $jsonArray['error']= "Invalid Id or Id does not exist";
+                        } else {
+                            $jsonArray['success'] = false;
+                            $jsonArray['error'] = "Invalid Id or Id does not exist";
                         }
 
 
