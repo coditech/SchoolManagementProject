@@ -225,6 +225,7 @@ class Router
                 } else if ($path[2] == "edit") {
                     if ($_SESSION['userType'] == "admin") {
                         $id = $_POST['id'];
+                        $user = $this->personMan->getPersonData($id);
                         $name = $_POST['name'];
                         $lastName = $_POST['lastName'];
                         $gender = $_POST['gender'];
@@ -233,21 +234,33 @@ class Router
                         $userType = $_POST['userType'];
                         $username = $_POST['username'];
                         $password = $_POST['password'];
+                        $user_exist = $this->personMan->personIdExists($id);
+                        $jsonArray['success'] = $user_exist;
 
-                        $this->personMan->editPerson($id, $name, $lastName, $gender, $email, $telephone, $userType, $username, $password);
+                        if ($user_exist) {
+                            $this->personMan->editPerson($id, $name, $lastName, $gender, $email, $telephone, $userType, $username, $password);
+                            $jsonArray['data'] = $this->personMan->getPersonData($id);
+
+
+                        } else {
+                            $jsonArray['error'] = "Invalid Id or Id does not exist";
+                        }
+
+
                     }
                 } else if ($path[2] == "delete") {
                     if ($_SESSION['userType'] == "admin" || $this->personMan->adminCheck($api_username, $api_password)) {
                         $id = $_POST['id'];
-                        $user = $this->personMan->getPersonData($id);
+                        $user_exist = $this->personMan->personIdExists($id);
 
-                        if ($user != null) {
+                        $jsonArray['success'] = $user_exist;
+
+                        if ($user_exist) {
                             $this->personMan->deletePerson($id);
 
-
                         } else {
-                            $jsonArray['success'] = false;
                             $jsonArray['error'] = "Invalid Id or Id does not exist";
+                            $jsonArray['id'] = $id;
                         }
 
 
