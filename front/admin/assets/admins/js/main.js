@@ -6,114 +6,8 @@ $(document).ready(function () {
         activeSub.parent().parent().find('.arrow').addClass('open');
         activeSub.parent().parent().addClass('open');
     }
-    window.dtDefaultOptions = {
-        retrieve: true,
-        dom: 'lBfrtip<"actions">',
-        columnDefs: [],
-        "iDisplayLength": 100,
-        "aaSorting": [],
-        buttons: [
-            {
-                extend: 'copy',
-                exportOptions: {
-                    columns: ':visible'
-                }
-            },
-            {
-                extend: 'csv',
-                exportOptions: {
-                    columns: ':visible'
-                }
-            },
-            {
-                extend: 'excel',
-                exportOptions: {
-                    columns: ':visible'
-                }
-            },
-            {
-                extend: 'pdf',
-                exportOptions: {
-                    columns: ':visible'
-                }
-            },
-            {
-                extend: 'print',
-                exportOptions: {
-                    columns: ':visible'
-                }
-            },
-            'colvis'
-        ]
-    };
-    $('.datatable').each(function () {
-        if ($(this).hasClass('dt-select')) {
-            window.dtDefaultOptions.select = {
-                style: 'multi',
-                selector: 'td:first-child'
-            };
 
-            window.dtDefaultOptions.columnDefs.push({
-                orderable: false,
-                className: 'select-checkbox',
-                targets: 0
-            });
-        }
-        $(this).dataTable(window.dtDefaultOptions);
-    });
-    if (typeof window.route_mass_crud_entries_destroy != 'undefined') {
-        $('.datatable, .ajaxTable').siblings('.actions').html('<a href="' + window.route_mass_crud_entries_destroy + '" class="btn btn-xs btn-danger js-delete-selected" style="margin-top:0.755em;margin-left: 20px;">Delete selected</a>');
-    }
 
-    $(document).on('click', '.js-delete-selected', function () {
-        if (confirm('Are you sure')) {
-            var ids = [];
-
-            $(this).closest('.actions').siblings('.datatable, .ajaxTable').find('tbody tr.selected').each(function () {
-                console.log("selected", $(this).data('entry-id'));
-                ids.push($(this).data('entry-id'));
-            });
-
-            $.ajax({
-                method: 'POST',
-                url: $(this).attr('href'),
-                data: {
-                    _token: _token,
-                    ids: ids
-                }
-            }).done(function () {
-                location.reload();
-            });
-        }
-
-        return false;
-    });
-
-    $(document).on('click', '#select-all', function () {
-        var selected = $(this).is(':checked');
-
-        $(this).closest('table.datatable, table.ajaxTable').find('td:first-child').each(function () {
-            if (selected != $(this).closest('tr').hasClass('selected')) {
-                $(this).click();
-            }
-        });
-    });
-
-    $('.mass').click(function () {
-        if ($(this).is(":checked")) {
-            $('.single').each(function () {
-                if ($(this).is(":checked") == false) {
-                    $(this).click();
-                }
-            });
-        } else {
-            $('.single').each(function () {
-                if ($(this).is(":checked") == true) {
-                    $(this).click();
-                }
-            });
-        }
-    });
 
     $('.page-sidebar').on('click', 'li > a', function (e) {
 
@@ -174,30 +68,6 @@ $(document).ready(function () {
         }
     });
 
-    $('.select2').select2();
 
 });
 
-function processAjaxTables() {
-    $('.ajaxTable').each(function () {
-        window.dtDefaultOptions.processing = true;
-        window.dtDefaultOptions.serverSide = true;
-        if ($(this).hasClass('dt-select')) {
-            window.dtDefaultOptions.select = {
-                style: 'multi',
-                selector: 'td:first-child'
-            };
-
-            window.dtDefaultOptions.columnDefs.push({
-                orderable: false,
-                className: 'select-checkbox',
-                targets: 0
-            });
-        }
-        $(this).DataTable(window.dtDefaultOptions);
-        if (typeof window.route_mass_crud_entries_destroy != 'undefined') {
-            $(this).siblings('.actions').html('<a href="' + window.route_mass_crud_entries_destroy + '" class="btn btn-xs btn-danger js-delete-selected" style="margin-top:0.755em;margin-left: 20px;">Delete selected</a>');
-        }
-    });
-
-}

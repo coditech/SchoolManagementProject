@@ -30,10 +30,22 @@
     <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
 
+    <link rel="stylesheet" type="text/css" href="">
     <link href="../assets/adminlte/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
     <link href="../assets/adminlte/css/AdminLTE.min.css" rel="stylesheet">
     <link href="../assets/adminlte/css/skins/skin-blue.min.css" rel="stylesheet">
+
+    <style>
+
+        .unread a {
+            font-weight: bold !important;
+        }
+
+        .is-link {
+            color: #5b9bd1 !important;
+        }
+    </style>
 
 </head>
 
@@ -57,13 +69,12 @@
         <!-- Header Navbar: style can be found in header.less -->
         <nav class="navbar navbar-static-top">
             <!-- Sidebar toggle button-->
-            <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+            <a href="#" class="sidebar-toggle" id="sidebar_toggle" data-toggle="offcanvas" role="button">
                 <span class="sr-only">Toggle navigation</span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </a>
-
 
 
         </nav>
@@ -205,12 +216,42 @@
 <form action="" method="post" id="logout">
     <button type="submit">Logout</button>
 </form>
-<script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
-<script src="../assets/admins/js/main.js"></script>
 
-<script src="../assets/adminlte/js/app.min.js"></script>
 <script>
+    var sidebars = document.getElementsByClassName('sidebar-toggle');
+
+
+    for (var i = 0; i < sidebars.length; i++) {
+        sidebars[i].addEventListener('click', function () {
+
+            if((" " + document.body.className + " " ).indexOf( " "+'sidebar-collapse'+" " ) > -1){
+                document.body.classList.remove('sidebar-collapse')
+                document.body.classList.remove('sidebar-open')
+            }else {
+                document.body.classList.add('sidebar-collapse');
+                document.body.classList.add('sidebar-open');
+//                var classString = document.body.className; // returns the string of all the classes for myDiv
+//                var newClass = classString.concat("sidebar-collapse"); // Adds the class "main__section" to the string (notice the leading space)
+//                document.body.className = newClass;
+            }
+
+        })
+
+    }
+    //    var sidebar = document.getElementById('sidebar_toggle"');
+    //
+    //    sidebar.addEventListener('click', function () {
+    //        sidebar.css.display = 'none';
+    //        alert('ji');
+    //    })
+
+
 </script>
 
+<script>
+
+</script>
+
+{{--@yield('javascript')--}}
 </body>
 </html>

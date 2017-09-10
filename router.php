@@ -44,6 +44,7 @@ class Router
         $path = $this->getPathArray();
         $jsonArray = array();
 
+
         if ($path[0] == 'api') {
 
 
@@ -206,8 +207,10 @@ class Router
                 }
 
             } else if ($path[1] == "person") {
-
+                $api_username = $_POST['api_username'];
+                $api_password = $_POST['api_password'];
                 if ($path[2] == "add") {
+
                     if ($_SESSION['userType'] == "admin") {
                         $id = $_POST['id'];
                         $name = $_POST['name'];
@@ -242,7 +245,7 @@ class Router
                         $this->personMan->deletePerson($id);
                     }
                 } else if ($path[2] == "info") {
-                    if ($_SESSION['userType'] == "admin") {
+                    if ($_SESSION['userType'] == "admin" || $this->personMan->adminCheck($api_username, $api_password)) {
                         if ($path[3] == "id") {
 
                             $id = $_POST['id'];
@@ -271,10 +274,19 @@ class Router
                             $jsonArray['data'] = $data;
 
                         }
+                    } else {
+                        $jsonArray['success'] = false;
+                        $jsonArray['error'] = 'user is not logid In';
+                        $jsonArray['session'] = $_SESSION;
+                        $jsonArray['username'] = $api_username;
+                        $jsonArray['password'] = $api_password;
+
+
                     }
 
+                }
 
-                } else if ($path[2] == "student") {
+                else if ($path[2] == "student") {
                     if ($_SESSION['userType'] == "student") {
                         if ($path[3] == "grades") {
 
@@ -374,20 +386,25 @@ class Router
 
                     $success = $this->personMan->login($username, $password);
                     $error = $this->personMan->getErrorLogin($username, $password);
-                    $user = $this->personMan->search('','','','','','','',$username);
+                    $user = $this->personMan->search('', '', '', '', '', '', '', $username);
 
                     $jsonArray['success'] = $success;
                     $jsonArray['error'] = $error;
                     $jsonArray['username'] = $username;
                     $jsonArray['password'] = $password;
-                    if($success){
+                    $jsonArray['session'] = $_SESSION;
+                    if ($success) {
                         $jsonArray['user'] = $user[0];
 
                     }
 
                 } else if ($path[2] == "logout") {
 
-                    $this->personMan->logout();
+                    $jsonArray['success'] = $this->personMan->logout();
+                    if (!$jsonArray['success']) {
+                        $jsonArray['error'] = "Some Error Happened";
+                    }
+
 
                 }
 
