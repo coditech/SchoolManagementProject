@@ -44,11 +44,12 @@ class Router
         $path = $this->getPathArray();
         $jsonArray = array();
 
-
         if ($path[0] == 'api') {
 
+            if ($path[1] = 'test') {
+               $this->personMan->editPerson(14,null,null,null, null, null, null,'guibs', 'guibs');
 
-            if ($path[1] == "home") {
+            } else if ($path[1] == "home") {
                 if (isset($_GET["page"])) {
                     $page = $_GET["page"];
                     if ($page < 1) {
@@ -239,10 +240,21 @@ class Router
                         $this->personMan->editPerson($id, $name, $lastName, $gender, $email, $telephone, $userType, $username, $password);
                     }
                 } else if ($path[2] == "delete") {
-                    if ($_SESSION['userType'] == "admin") {
+                    if ($_SESSION['userType'] == "admin" || $this->personMan->adminCheck($api_username, $api_password)) {
                         $id = $_POST['id'];
+                        $user = $this->personMan->getPersonData($id);
 
-                        $this->personMan->deletePerson($id);
+                        if($user!= null){
+                            $this->personMan->deletePerson($id);
+                            $jsonArray['success']= true;
+
+
+                        }else {
+                            $jsonArray['success']= false;
+                            $jsonArray['error']= "Invalid Id or Id does not exist";
+                        }
+
+
                     }
                 } else if ($path[2] == "info") {
                     if ($_SESSION['userType'] == "admin" || $this->personMan->adminCheck($api_username, $api_password)) {
@@ -257,6 +269,7 @@ class Router
                             $jsonArray['success'] = $success;
                             $jsonArray['data'] = $data;
                             $jsonArray['error'] = $error;
+                            $jsonArray['id'] = $id;
 
                         } else if ($path[3] == "search") {
 
@@ -272,6 +285,12 @@ class Router
 
                             $data = $this->personMan->search($id, $name, $lastName, $gender, $email, $telephone, $userType, $username);
                             $jsonArray['data'] = $data;
+                            $jsonArray['success'] = false;
+
+                            if (count($data) > 0) {
+
+                            }
+                            $jsonArray['success'] = true;
 
                         }
                     } else {
@@ -284,9 +303,7 @@ class Router
 
                     }
 
-                }
-
-                else if ($path[2] == "student") {
+                } else if ($path[2] == "student") {
                     if ($_SESSION['userType'] == "student") {
                         if ($path[3] == "grades") {
 
