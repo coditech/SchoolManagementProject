@@ -219,8 +219,14 @@ class Router
                         $userType = $_POST['userType'];
                         $username = $_POST['username'];
                         $password = $_POST['password'];
+                        $user_exist = $this->personMan->personIdExists($id);
+                        $jsonArray['success'] = !$user_exist;
+                        if (!$user_exist) {
+                            $this->personMan->addPerson($id, $name, $lastName, $gender, $email, $telephone, $userType, $username, $password);
+                        } else {
+                            $jsonArray['error'] = "Id Already Exist";
 
-                        $this->personMan->addPerson($id, $name, $lastName, $gender, $email, $telephone, $userType, $username, $password);
+                        }
                     }
                 } else if ($path[2] == "edit") {
                     if ($_SESSION['userType'] == "admin") {
