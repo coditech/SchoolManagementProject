@@ -221,10 +221,17 @@ class Router
                         $password = $_POST['password'];
                         $user_exist = $this->personMan->personIdExists($id);
                         $jsonArray['success'] = !$user_exist;
-                        if (!$user_exist) {
+                        $username_exist = count($this->personMan->search('', '', '', '', '', '', '', $username)) > 0;
+
+                        if (!$user_exist && !$username_exist) {
                             $this->personMan->addPerson($id, $name, $lastName, $gender, $email, $telephone, $userType, $username, $password);
                         } else {
-                            $jsonArray['error'] = "Id Already Exist";
+                            if($user_exist){
+                                $jsonArray['error']['id'] = 'Id already exist';
+                            } if($username_exist){
+                                $jsonArray['error']['username'] = 'username already exist';
+
+                            }
 
                         }
                     }
