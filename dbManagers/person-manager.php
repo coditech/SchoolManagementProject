@@ -11,7 +11,17 @@ class PersonManager
     }
 
     public function addPerson($id, $name, $lastName, $gender, $email, $telephone, $userType, $username, $password)
-    {
+    {   
+        $id = $id ? $id : '';
+        $name = $name ? $name : '';
+        $lastName = $lastName ? $lastName : '';
+        $gender = $gender ? $gender : '';
+        $email = $email ? $email : ''; 
+        $telephone = $telephone ? $telephone : '';
+        $userType = $userType ? $userType : '';
+        $username = $username ? $username : '';
+        $password = $password ? $password : '';
+
         $date = date("Y/m/d");
         $insert = "INSERT INTO person (id,name,lastName,gender,email,telephone,userType,username,password,date) VALUES (:id,:name,:lastName,:gender,:email,:telephone,:userType,:username,:password,:date)";
         $statement = $this->db->prepare($insert);
