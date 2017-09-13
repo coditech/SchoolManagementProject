@@ -74,7 +74,7 @@ class Router
 
                 if ($path[2] == "add") {
 
-                    if ($_SESSION['userType'] == "admin") {
+                    if ($_SESSION['userType'] == "admin" || $this->personMan->adminCheck($api_username, $api_password)) {
                         $title = $_POST['title'];
                         $text = $_POST['text'];
                         $files = $_FILES['files'];
@@ -87,7 +87,7 @@ class Router
 
                 } else if ($path[2] == "edit") {
 
-                    if ($_SESSION['userType'] == "admin") {
+                    if ($_SESSION['userType'] == "admin" || $this->personMan->adminCheck($api_username, $api_password)) {
 
                         $id = $_POST['id'];
                         $title = $_POST['title'];
@@ -100,7 +100,7 @@ class Router
                     }
 
                 } else if ($path[2] == "delete") {
-                    if ($_SESSION['userType'] == "admin") {
+                    if ($_SESSION['userType'] == "admin" || $this->personMan->adminCheck($api_username, $api_password)) {
                         $id = $_POST['id'];
                         $this->articleMan->deleteArticle($id);
                     }
@@ -119,7 +119,7 @@ class Router
                 }
 
             } else if ($path[1] == "course") {
-                if ($_SESSION['userType'] == "admin") {
+                if ($_SESSION['userType'] == "admin" || $this->personMan->adminCheck($api_username, $api_password)) {
                     if ($path[2] == "add") {
 
                         $courseCode = $_POST['courseCode'];
@@ -164,7 +164,7 @@ class Router
 
 
             } else if ($path[1] == "grade") {
-                if ($_SESSION['userType'] == "admin") {
+                if ($_SESSION['userType'] == "admin" || $this->personMan->adminCheck($api_username, $api_password)) {
                     if ($path[2] == "add") {
 
                         $score = $_POST['score'];
@@ -209,7 +209,7 @@ class Router
                 $api_password = $_POST['api_password'];
                 if ($path[2] == "add") {
 
-                    if ($_SESSION['userType'] == "admin") {
+                    if ($_SESSION['userType'] == "admin" || $this->personMan->adminCheck($api_username, $api_password)) {
                         $id = $_POST['id'];
                         $name = $_POST['name'];
                         $lastName = $_POST['lastName'];
@@ -226,17 +226,16 @@ class Router
                         if (!$user_exist && !$username_exist) {
                             $this->personMan->addPerson($id, $name, $lastName, $gender, $email, $telephone, $userType, $username, $password);
                         } else {
-                            if($user_exist){
+                            if ($user_exist) {
                                 $jsonArray['error']['id'] = 'Id already exist';
-                            } if($username_exist){
-                                $jsonArray['error']['username'] = 'username already exist';
-
                             }
-
+                            if ($username_exist) {
+                                $jsonArray['error']['username'] = 'username already exist';
+                            }
                         }
                     }
                 } else if ($path[2] == "edit") {
-                    if ($_SESSION['userType'] == "admin") {
+                    if ($_SESSION['userType'] == "admin" || $this->personMan->adminCheck($api_username, $api_password)) {
                         $id = $_POST['id'];
                         $user = $this->personMan->getPersonData($id);
                         $name = $_POST['name'];
@@ -296,14 +295,14 @@ class Router
                         } else if ($path[3] == "search") {
 
 
-                            $id = $_POST['id'];
-                            $name = $_POST['name'];
-                            $lastName = $_POST['lastName'];
-                            $gender = $_POST['gender'];
-                            $email = $_POST['email'];
-                            $telephone = $_POST['telephone'];
-                            $userType = $_POST['userType'];
-                            $username = $_POST['username'];
+                            $id = $_POST['id'] ? $_POST['id'] : '';
+                            $name = $_POST['name'] ? $_POST['name'] : '';
+                            $lastName = $_POST['lastName'] ? $_POST['lastName'] : '';
+                            $gender = $_POST['gender'] ? $_POST['gender'] : '';
+                            $email = $_POST['email'] ? $_POST['email'] : '';
+                            $telephone = $_POST['telephone'] ? $_POST['telephone'] : '';
+                            $userType = $_POST['userType'] ? $_POST['userType'] : '';
+                            $username = $_POST['username'] ? $_POST['username'] : '';
 
                             $data = $this->personMan->search($id, $name, $lastName, $gender, $email, $telephone, $userType, $username);
                             $jsonArray['data'] = $data;

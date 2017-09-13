@@ -15,7 +15,13 @@ class PersonManager
         $date = date("Y/m/d");
         $insert = "INSERT INTO person (id,name,lastName,gender,email,telephone,userType,username,password,date) VALUES (:id,:name,:lastName,:gender,:email,:telephone,:userType,:username,:password,:date)";
         $statement = $this->db->prepare($insert);
-        $statement->execute([':id' => $id, ':name' => $name, ':lastName' => $lastName, ':gender' => $gender, ':email' => $email, ':telephone' => $telephone, ':userType' => $userType, ':username' => $username, ':password' => $password, ':date' => $date]);
+        try {
+            $statement->execute([':id' => $id, ':name' => $name, ':lastName' => $lastName, ':gender' => $gender, ':email' => $email, ':telephone' => $telephone, ':userType' => $userType, ':username' => $username, ':password' => $password, ':date' => $date]);
+
+        }
+        catch (PDOException $e){
+            return false;
+        }
     }
 
     public function deletePerson($id)
