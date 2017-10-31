@@ -449,21 +449,7 @@ class Router
             }
             header('Content-Type: application/json');
             echo json_encode($jsonArray);
-        } /**
-         *  Front End Routes
-         *
-         */
-        else {
-            if ($path[0] == '') {
-                require 'front/index.html';
-
-            } else if ($path[0] == 'article') {
-                require 'front/article.html';
-
-            }
-        }
-
-        //
+        } 
 
 
     }
