@@ -16,7 +16,7 @@ class PersonManager
         $name = $name ? $name : '';
         $lastName = $lastName ? $lastName : '';
         $gender = $gender ? $gender : '';
-        $email = $email ? $email : ''; 
+        $email = $email ? $email : '';
         $telephone = $telephone ? $telephone : '';
         $userType = $userType ? $userType : '';
         $username = $username ? $username : '';
